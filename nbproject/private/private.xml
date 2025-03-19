@@ -3,14 +3,19 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/Mark%20Kevin%20Romo/Documents/NetBeansProjects/HBSGUIROMO/src/hbsguiromo/FDSPage.java</file>
             <file>file:/C:/Users/Mark%20Kevin%20Romo/Documents/NetBeansProjects/HBSGUIROMO/src/hbsguiromo/RegistrationForm.java</file>
-            <file>file:/C:/Users/Mark%20Kevin%20Romo/Documents/NetBeansProjects/HBSGUIROMO/src/hbsguiromo/RCPage.java</file>
-            <file>file:/C:/Users/Mark%20Kevin%20Romo/Documents/NetBeansProjects/HBSGUIROMO/src/hbsguiromo/usersForm.java</file>
-            <file>file:/C:/Users/Mark%20Kevin%20Romo/Documents/NetBeansProjects/HBSGUIROMO/src/hbsguiromo/Dashboard.java</file>
-            <file>file:/C:/Users/Mark%20Kevin%20Romo/Documents/NetBeansProjects/HBSGUIROMO/src/hbsguiromo/HMPage.java</file>
+            <file>file:/C:/Users/Mark%20Kevin%20Romo/Documents/NetBeansProjects/HBSGUIROMO/src/Staff/bookingsForm.java</file>
+            <file>file:/C:/Users/Mark%20Kevin%20Romo/Documents/NetBeansProjects/HBSGUIROMO/src/config/Session.java</file>
+            <file>file:/C:/Users/Mark%20Kevin%20Romo/Documents/NetBeansProjects/HBSGUIROMO/src/Admin/HMPage.java</file>
+            <file>file:/C:/Users/Mark%20Kevin%20Romo/Documents/NetBeansProjects/HBSGUIROMO/src/Admin/usersForm.java</file>
             <file>file:/C:/Users/Mark%20Kevin%20Romo/Documents/NetBeansProjects/HBSGUIROMO/src/config/dbConnector.java</file>
-            <file>file:/C:/Users/Mark%20Kevin%20Romo/Documents/NetBeansProjects/HBSGUIROMO/src/hbsguiromo/MainPage.java</file>
+            <file>file:/C:/Users/Mark%20Kevin%20Romo/Documents/NetBeansProjects/HBSGUIROMO/src/Admin/DeleteUserForm.java</file>
+            <file>file:/C:/Users/Mark%20Kevin%20Romo/Documents/NetBeansProjects/HBSGUIROMO/src/Admin/UpdateUserForm.java</file>
+            <file>file:/C:/Users/Mark%20Kevin%20Romo/Documents/NetBeansProjects/HBSGUIROMO/src/config/hoteldb.sql</file>
+            <file>file:/C:/Users/Mark%20Kevin%20Romo/Documents/NetBeansProjects/HBSGUIROMO/src/hbsguiromo/LoginPage.java</file>
+            <file>file:/C:/Users/Mark%20Kevin%20Romo/Documents/NetBeansProjects/HBSGUIROMO/src/Admin/AddUserForm.java</file>
+            <file>file:/C:/Users/Mark%20Kevin%20Romo/Documents/NetBeansProjects/HBSGUIROMO/src/config/HashPass.java</file>
+            <file>file:/C:/Users/Mark%20Kevin%20Romo/Documents/NetBeansProjects/HBSGUIROMO/src/RCoordinator/roomsForm.java</file>
         </group>
     </open-files>
 </project-private>

@@ -5,7 +5,13 @@
  */
 package hbsguiromo;
 
+import Admin.HMPage;
+import Staff.FDSPage;
+import RCoordinator.RCPage;
+import config.HashPass;
+import config.Session;
 import config.dbConnector;
+import java.security.NoSuchAlgorithmException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import javax.swing.JOptionPane;
@@ -14,12 +20,12 @@ import javax.swing.JOptionPane;
  *
  * @author Mark Kevin Romo
  */
-public class MainPage extends javax.swing.JFrame {
+public class LoginPage extends javax.swing.JFrame {
 
     /**
      * Creates new form MainPage
      */
-    public MainPage() {
+    public LoginPage() {
         initComponents();
         this.setResizable(false);
     }
@@ -29,19 +35,42 @@ public class MainPage extends javax.swing.JFrame {
     
     public static boolean loginAcc(String username, String password){
     dbConnector connector = new dbConnector();
+    
     try{
-        String query = "SELECT * FROM tbl_user WHERE u_usern = '" +username+ "' AND u_pass = '" +password+"'";
+        String query = "SELECT * FROM tbl_user WHERE u_usern = '" +username+ "'";
         ResultSet resultSet = connector.getData(query);
     if(resultSet.next()){
+        
+    
+        String hash = resultSet.getString("u_pass");
+        String rehash = HashPass.hashPassword(password);
+        if(hash.equals(rehash)){
         status = resultSet.getString("u_status");
         type = resultSet.getString("u_type");
+        Session sess = Session.getInstance();
+        sess.setUid(resultSet.getInt("u_id"));
+        sess.setFname(resultSet.getString("u_fname"));
+        sess.setLname(resultSet.getString("u_lname"));
+        sess.setEmail(resultSet.getString("u_email"));
+        sess.setCnum(resultSet.getString("u_cnum"));
+        sess.setUsername(resultSet.getString("u_usern"));
+        sess.setGender(resultSet.getString("u_gen"));
+        sess.setAge(resultSet.getString("u_age"));
+        sess.setType(resultSet.getString("u_type"));
+        sess.setStatus(resultSet.getString("u_status"));
+        
     return true;
+    
     }else{
     return false;
     }
-    }catch (SQLException ex){
+       
+    }else{
     return false;
-        }
+    }
+    }catch (SQLException | NoSuchAlgorithmException  ex){
+    return false;
+    }
     
     }
 
@@ -54,10 +83,8 @@ public class MainPage extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jSlider1 = new javax.swing.JSlider();
         jPanel1 = new javax.swing.JPanel();
         jPanel2 = new javax.swing.JPanel();
-        jLabel7 = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         un = new javax.swing.JTextField();
@@ -69,43 +96,46 @@ public class MainPage extends javax.swing.JFrame {
         jLabel8 = new javax.swing.JLabel();
         jLabel9 = new javax.swing.JLabel();
         jLabel10 = new javax.swing.JLabel();
+        hide = new javax.swing.JLabel();
+        show = new javax.swing.JLabel();
         ps = new javax.swing.JPasswordField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        jPanel1.setBackground(new java.awt.Color(255, 255, 51));
+        jPanel1.setBackground(new java.awt.Color(0, 0, 0));
         jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        jPanel2.setBackground(new java.awt.Color(255, 204, 0));
+        jPanel2.setBackground(new java.awt.Color(0, 0, 0));
         jPanel2.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+        jPanel1.add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(1100, 0, 10, 510));
 
-        jLabel7.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/istockphoto-487042276-612x612.jpg"))); // NOI18N
-        jPanel2.add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 50, 564, -1));
-
-        jPanel1.add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(450, 0, 660, 510));
-
+        jLabel1.setBackground(new java.awt.Color(255, 255, 255));
         jLabel1.setFont(new java.awt.Font("Arial Narrow", 0, 18)); // NOI18N
+        jLabel1.setForeground(new java.awt.Color(255, 255, 255));
         jLabel1.setText("Password:");
-        jPanel1.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 300, -1, 30));
+        jPanel1.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(320, 300, -1, 30));
 
         jLabel2.setFont(new java.awt.Font("Castellar", 1, 48)); // NOI18N
+        jLabel2.setForeground(new java.awt.Color(255, 255, 255));
         jLabel2.setText("COZYSTAY");
-        jPanel1.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 30, 340, 60));
+        jPanel1.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(400, 30, 340, 60));
 
         un.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 unActionPerformed(evt);
             }
         });
-        jPanel1.add(un, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 230, 320, 40));
+        jPanel1.add(un, new org.netbeans.lib.awtextra.AbsoluteConstraints(400, 230, 320, 40));
 
         jLabel3.setFont(new java.awt.Font("Arial Narrow", 0, 18)); // NOI18N
+        jLabel3.setForeground(new java.awt.Color(255, 255, 255));
         jLabel3.setText("Welcome back User! Please fill the details below.");
-        jPanel1.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 190, 320, 30));
+        jPanel1.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(400, 190, 320, 30));
 
         jLabel4.setFont(new java.awt.Font("Arial Narrow", 0, 18)); // NOI18N
+        jLabel4.setForeground(new java.awt.Color(255, 255, 255));
         jLabel4.setText("Username:");
-        jPanel1.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 240, -1, 30));
+        jPanel1.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(320, 240, -1, 30));
 
         jButton1.setBackground(new java.awt.Color(255, 255, 255));
         jButton1.setFont(new java.awt.Font("Arial Narrow", 0, 18)); // NOI18N
@@ -115,7 +145,7 @@ public class MainPage extends javax.swing.JFrame {
                 jButton1ActionPerformed(evt);
             }
         });
-        jPanel1.add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 350, 150, 40));
+        jPanel1.add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(400, 350, 150, 40));
 
         jButton3.setBackground(new java.awt.Color(255, 255, 255));
         jButton3.setFont(new java.awt.Font("Arial Narrow", 0, 18)); // NOI18N
@@ -125,35 +155,66 @@ public class MainPage extends javax.swing.JFrame {
                 jButton3ActionPerformed(evt);
             }
         });
-        jPanel1.add(jButton3, new org.netbeans.lib.awtextra.AbsoluteConstraints(270, 350, 150, 40));
+        jPanel1.add(jButton3, new org.netbeans.lib.awtextra.AbsoluteConstraints(570, 350, 150, 40));
 
         jLabel6.setFont(new java.awt.Font("Arial Black", 1, 18)); // NOI18N
+        jLabel6.setForeground(new java.awt.Color(255, 255, 255));
         jLabel6.setText("Sign In or Create an Account");
-        jPanel1.add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 140, 320, 60));
+        jPanel1.add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(400, 140, 320, 60));
 
         jLabel8.setFont(new java.awt.Font("Arial Narrow", 1, 18)); // NOI18N
+        jLabel8.setForeground(new java.awt.Color(255, 255, 255));
         jLabel8.setText("Here");
         jLabel8.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 jLabel8MouseClicked(evt);
             }
         });
-        jPanel1.add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(250, 410, 40, 30));
+        jPanel1.add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(550, 410, 40, 30));
 
+        jLabel9.setBackground(new java.awt.Color(255, 255, 255));
         jLabel9.setFont(new java.awt.Font("Arial Narrow", 2, 16)); // NOI18N
+        jLabel9.setForeground(new java.awt.Color(255, 255, 255));
         jLabel9.setText("to Register");
-        jPanel1.add(jLabel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(290, 410, 70, 30));
+        jPanel1.add(jLabel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(590, 410, 70, 30));
 
+        jLabel10.setBackground(new java.awt.Color(255, 255, 255));
         jLabel10.setFont(new java.awt.Font("Arial Narrow", 2, 16)); // NOI18N
+        jLabel10.setForeground(new java.awt.Color(255, 255, 255));
         jLabel10.setText("New User? Click");
-        jPanel1.add(jLabel10, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 410, 100, 30));
+        jPanel1.add(jLabel10, new org.netbeans.lib.awtextra.AbsoluteConstraints(450, 410, 100, 30));
+
+        hide.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/hide.png"))); // NOI18N
+        hide.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                hideMouseClicked(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                hideMouseExited(evt);
+            }
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                hideMousePressed(evt);
+            }
+            public void mouseReleased(java.awt.event.MouseEvent evt) {
+                hideMouseReleased(evt);
+            }
+        });
+        jPanel1.add(hide, new org.netbeans.lib.awtextra.AbsoluteConstraints(690, 300, -1, -1));
+
+        show.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/show.png"))); // NOI18N
+        show.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                showMouseClicked(evt);
+            }
+        });
+        jPanel1.add(show, new org.netbeans.lib.awtextra.AbsoluteConstraints(690, 300, 20, -1));
 
         ps.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 psActionPerformed(evt);
             }
         });
-        jPanel1.add(ps, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 290, 320, 40));
+        jPanel1.add(ps, new org.netbeans.lib.awtextra.AbsoluteConstraints(400, 290, 320, 40));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -171,7 +232,7 @@ public class MainPage extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        // TODO add your handling code here:
+        this.dispose();        // TODO add your handling code here:
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jLabel8MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel8MouseClicked
@@ -182,43 +243,53 @@ public class MainPage extends javax.swing.JFrame {
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
       
-    if (loginAcc(un.getText(), String.valueOf(ps.getPassword()))) { 
-        
-      
-    if(!status.equals("Active")){
-        JOptionPane.showMessageDialog(null, "Account is Inactive, Contact the Admininistrator!");
-    }else{
-    if(type.equals("Hotel Manager ^Admin^")){
-        JOptionPane.showMessageDialog(null, "Login Successfully!");
+    // Check if fields are empty
+    if (un.getText().isEmpty() || ps.getPassword().length == 0) {
+        JOptionPane.showMessageDialog(null, "All fields are required!");
+        return;
+    }
+
+    // Validate password length
+    String password = String.valueOf(ps.getPassword());
+    if (password.length() < 8) {
+        JOptionPane.showMessageDialog(null, "Password must be at least 8 characters long!");
+        ps.setText(""); 
+        return;
+    }
+
+    // Attempt login
+    if (!loginAcc(un.getText(), password)) { 
+        JOptionPane.showMessageDialog(null, "Invalid Username or Password!");
+        return;
+    }
+
+    // Check if account type is recognized
+    if (!(type.equals("Admin") || type.equals("Front Desk Staff") || type.equals("Room Coordinator"))) {
+        JOptionPane.showMessageDialog(null, "No Account Type Found, Contact the Administrator!");
+        return;
+    }
+
+    // Check if account is inactive
+    if (!status.equals("Active")) {
+        JOptionPane.showMessageDialog(null, "Account is Inactive, Contact the Administrator!");
+        return;
+    }
+
+    // If all checks pass, show success message and redirect user
+    JOptionPane.showMessageDialog(null, "Login Successfully!");
+
+    if (type.equals("Admin")) {
         HMPage hmp = new HMPage();
         hmp.setVisible(true);
-        this.dispose();
-        
-    }else if(type.equals("Front Desk Staff")){
-        JOptionPane.showMessageDialog(null, "Login Successfully!");
+    } else if (type.equals("Front Desk Staff")) {
         FDSPage fds = new FDSPage();
         fds.setVisible(true);
-        this.dispose();
-    }else if(type.equals("Room Coordinator")){
-        JOptionPane.showMessageDialog(null, "Login Successfully!");
+    } else if (type.equals("Room Coordinator")) {
         RCPage rcp = new RCPage();
         rcp.setVisible(true);
-        this.dispose();
-    }else{
-    JOptionPane.showMessageDialog(null, "No Account Type Found, Contact the Admininistrator!");
     }
-        
-    }
-        }
-    if(un.getText().isEmpty() || ps.getPassword().length == 0 ){
-           JOptionPane.showMessageDialog(null,"All field are Required!");
-       }
-    String password = String.valueOf(ps.getPassword()); 
 
-     if (password.length() < 8) {
-    JOptionPane.showMessageDialog(null, "Password must be at least 8 characters long!");
-    ps.setText(""); 
-    }
+    this.dispose(); // Close login form only on successful login
 
 
     }//GEN-LAST:event_jButton3ActionPerformed
@@ -230,6 +301,30 @@ public class MainPage extends javax.swing.JFrame {
     private void unActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_unActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_unActionPerformed
+
+    private void hideMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_hideMousePressed
+        
+    }//GEN-LAST:event_hideMousePressed
+
+    private void hideMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_hideMouseReleased
+        
+    }//GEN-LAST:event_hideMouseReleased
+
+    private void hideMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_hideMouseClicked
+        show.setVisible(true);
+        hide.setVisible(false);
+        ps.setEchoChar((char)0);
+    }//GEN-LAST:event_hideMouseClicked
+
+    private void hideMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_hideMouseExited
+        // TODO add your handling code here:
+    }//GEN-LAST:event_hideMouseExited
+
+    private void showMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_showMouseClicked
+        show.setVisible(false);
+        hide.setVisible(true);
+        ps.setEchoChar('*');
+    }//GEN-LAST:event_showMouseClicked
 
     /**
      * @param args the command line arguments
@@ -248,25 +343,27 @@ public class MainPage extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(MainPage.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(LoginPage.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(MainPage.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(LoginPage.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(MainPage.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(LoginPage.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(MainPage.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(LoginPage.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new MainPage().setVisible(true);
+                new LoginPage().setVisible(true);
             }
         });
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JLabel hide;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton3;
     private javax.swing.JLabel jLabel1;
@@ -275,13 +372,12 @@ public class MainPage extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel6;
-    private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
-    private javax.swing.JSlider jSlider1;
     private javax.swing.JPasswordField ps;
+    private javax.swing.JLabel show;
     private javax.swing.JTextField un;
     // End of variables declaration//GEN-END:variables
 }

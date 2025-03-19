@@ -7,6 +7,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import javax.swing.JOptionPane;
 
 public class dbConnector {
     
@@ -43,5 +44,23 @@ public class dbConnector {
             }
             
         }
+        
+        //Function to update data
+        public boolean updateData(String sql, Object... params) {
+    try (PreparedStatement pst = connect.prepareStatement(sql)) {
+        // Set parameters dynamically
+        for (int i = 0; i < params.length; i++) {
+            pst.setObject(i + 1, params[i]);
+        }
+
+        int rowsUpdated = pst.executeUpdate();
+        return rowsUpdated > 0;
+
+    } catch (SQLException ex) {
+        System.out.println("Connection Error: " + ex.getMessage());
+        return false;
+    }
+}
+
         
 }

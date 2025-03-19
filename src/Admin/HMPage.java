@@ -3,7 +3,14 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package hbsguiromo;
+package Admin;
+
+import RCoordinator.roomsForm;
+import Staff.bookingsForm;
+import config.Session;
+import hbsguiromo.LoginPage;
+import java.awt.Color;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -18,7 +25,10 @@ public class HMPage extends javax.swing.JFrame {
         initComponents();
         this.setResizable(false);
     }
-
+    
+        Color navcolor = new Color(102,255,51);
+        Color hovercolor = new Color(0,255,51);
+        Color exitcolor = new Color(51,51,51);
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -29,98 +39,184 @@ public class HMPage extends javax.swing.JFrame {
     private void initComponents() {
 
         jPanel1 = new javax.swing.JPanel();
-        jPanel2 = new javax.swing.JPanel();
+        acc_name = new javax.swing.JLabel();
+        jLabel4 = new javax.swing.JLabel();
+        p_room = new javax.swing.JPanel();
+        jLabel5 = new javax.swing.JLabel();
+        p_user = new javax.swing.JPanel();
+        jLabel3 = new javax.swing.JLabel();
+        p_bookings = new javax.swing.JPanel();
         jLabel6 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
-        jPanel5 = new javax.swing.JPanel();
-        jLabel7 = new javax.swing.JLabel();
-        jPanel6 = new javax.swing.JPanel();
+        jLabel8 = new javax.swing.JLabel();
+        jLabel1 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowActivated(java.awt.event.WindowEvent evt) {
+                formWindowActivated(evt);
+            }
+        });
 
-        jPanel1.setBackground(new java.awt.Color(255, 255, 51));
+        jPanel1.setBackground(new java.awt.Color(0, 0, 0));
+        jPanel1.setMinimumSize(new java.awt.Dimension(971, 426));
         jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        jPanel2.setBackground(new java.awt.Color(255, 204, 0));
+        acc_name.setFont(new java.awt.Font("Arial Black", 1, 18)); // NOI18N
+        acc_name.setForeground(new java.awt.Color(255, 255, 255));
+        acc_name.setText("ADMIN");
+        jPanel1.add(acc_name, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 30, 350, -1));
+
+        jLabel4.setFont(new java.awt.Font("Arial Black", 1, 18)); // NOI18N
+        jLabel4.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel4.setText("WELCOME ADMIN");
+        jPanel1.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 100, -1, -1));
+
+        p_room.setBackground(new java.awt.Color(51, 51, 51));
+        p_room.addMouseMotionListener(new java.awt.event.MouseMotionAdapter() {
+            public void mouseDragged(java.awt.event.MouseEvent evt) {
+                p_roomMouseDragged(evt);
+            }
+            public void mouseMoved(java.awt.event.MouseEvent evt) {
+                p_roomMouseMoved(evt);
+            }
+        });
+        p_room.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                p_roomMouseClicked(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                p_roomMouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                p_roomMouseExited(evt);
+            }
+        });
+        p_room.setLayout(null);
+
+        jLabel5.setFont(new java.awt.Font("Arial Black", 1, 18)); // NOI18N
+        jLabel5.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel5.setText("ROOM'S");
+        jLabel5.addMouseMotionListener(new java.awt.event.MouseMotionAdapter() {
+            public void mouseMoved(java.awt.event.MouseEvent evt) {
+                jLabel5MouseMoved(evt);
+            }
+        });
+        jLabel5.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jLabel5MouseClicked(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                jLabel5MouseExited(evt);
+            }
+        });
+        p_room.add(jLabel5);
+        jLabel5.setBounds(40, 20, 90, 26);
+
+        jPanel1.add(p_room, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 400, 170, 70));
+
+        p_user.setBackground(new java.awt.Color(51, 51, 51));
+        p_user.addMouseMotionListener(new java.awt.event.MouseMotionAdapter() {
+            public void mouseDragged(java.awt.event.MouseEvent evt) {
+                p_userMouseDragged(evt);
+            }
+            public void mouseMoved(java.awt.event.MouseEvent evt) {
+                p_userMouseMoved(evt);
+            }
+        });
+        p_user.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                p_userMouseClicked(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                p_userMouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                p_userMouseExited(evt);
+            }
+        });
+        p_user.setLayout(null);
+
+        jLabel3.setFont(new java.awt.Font("Arial Black", 1, 18)); // NOI18N
+        jLabel3.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel3.setText("USER'S");
+        jLabel3.addMouseMotionListener(new java.awt.event.MouseMotionAdapter() {
+            public void mouseMoved(java.awt.event.MouseEvent evt) {
+                jLabel3MouseMoved(evt);
+            }
+        });
+        jLabel3.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jLabel3MouseClicked(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                jLabel3MouseExited(evt);
+            }
+        });
+        p_user.add(jLabel3);
+        jLabel3.setBounds(40, 20, 79, 26);
+
+        jPanel1.add(p_user, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 170, 170, 70));
+
+        p_bookings.setBackground(new java.awt.Color(51, 51, 51));
+        p_bookings.addMouseMotionListener(new java.awt.event.MouseMotionAdapter() {
+            public void mouseDragged(java.awt.event.MouseEvent evt) {
+                p_bookingsMouseDragged(evt);
+            }
+            public void mouseMoved(java.awt.event.MouseEvent evt) {
+                p_bookingsMouseMoved(evt);
+            }
+        });
+        p_bookings.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                p_bookingsMouseClicked(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                p_bookingsMouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                p_bookingsMouseExited(evt);
+            }
+        });
+        p_bookings.setLayout(null);
 
         jLabel6.setFont(new java.awt.Font("Arial Black", 1, 18)); // NOI18N
-        jLabel6.setText("WELCOME ADMIN");
+        jLabel6.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel6.setText("BOOKING'S");
+        jLabel6.addMouseMotionListener(new java.awt.event.MouseMotionAdapter() {
+            public void mouseMoved(java.awt.event.MouseEvent evt) {
+                jLabel6MouseMoved(evt);
+            }
+        });
+        jLabel6.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jLabel6MouseClicked(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                jLabel6MouseExited(evt);
+            }
+        });
+        p_bookings.add(jLabel6);
+        jLabel6.setBounds(20, 20, 130, 26);
+
+        jPanel1.add(p_bookings, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 280, 170, 70));
 
         jLabel2.setFont(new java.awt.Font("Arial Black", 1, 18)); // NOI18N
+        jLabel2.setForeground(new java.awt.Color(255, 255, 255));
         jLabel2.setText("LOGOUT");
         jLabel2.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 jLabel2MouseClicked(evt);
             }
         });
+        jPanel1.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(990, 450, -1, -1));
 
-        jPanel5.setBackground(new java.awt.Color(0, 0, 0));
+        jLabel8.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/XD.jpg"))); // NOI18N
+        jPanel1.add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(250, 70, 710, 350));
 
-        javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
-        jPanel5.setLayout(jPanel5Layout);
-        jPanel5Layout.setHorizontalGroup(
-            jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 130, Short.MAX_VALUE)
-        );
-        jPanel5Layout.setVerticalGroup(
-            jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 9, Short.MAX_VALUE)
-        );
-
-        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
-        jPanel2.setLayout(jPanel2Layout);
-        jPanel2Layout.setHorizontalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel2Layout.createSequentialGroup()
-                .addContainerGap(345, Short.MAX_VALUE)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                        .addComponent(jLabel6)
-                        .addGap(327, 327, 327))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                        .addComponent(jLabel2)
-                        .addGap(41, 41, 41))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                        .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(23, 23, 23))))
-        );
-        jPanel2Layout.setVerticalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel2Layout.createSequentialGroup()
-                .addGap(29, 29, 29)
-                .addComponent(jLabel6)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 386, Short.MAX_VALUE)
-                .addComponent(jLabel2)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(27, 27, 27))
-        );
-
-        jPanel1.add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(250, 0, 860, 510));
-
-        jLabel7.setFont(new java.awt.Font("Arial Black", 1, 18)); // NOI18N
-        jLabel7.setText("DASHBOARD");
-        jLabel7.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jLabel7MouseClicked(evt);
-            }
-        });
-        jPanel1.add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 90, -1, -1));
-
-        jPanel6.setBackground(new java.awt.Color(0, 0, 0));
-
-        javax.swing.GroupLayout jPanel6Layout = new javax.swing.GroupLayout(jPanel6);
-        jPanel6.setLayout(jPanel6Layout);
-        jPanel6Layout.setHorizontalGroup(
-            jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 160, Short.MAX_VALUE)
-        );
-        jPanel6Layout.setVerticalGroup(
-            jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 10, Short.MAX_VALUE)
-        );
-
-        jPanel1.add(jPanel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 120, 160, 10));
+        jLabel1.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/Manager 50x50.png"))); // NOI18N
+        jPanel1.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 20, -1, -1));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -128,17 +224,13 @@ public class HMPage extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGap(0, 1110, Short.MAX_VALUE)
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(layout.createSequentialGroup()
-                    .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGap(0, 0, Short.MAX_VALUE)))
+                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 680, Short.MAX_VALUE)
+            .addGap(0, 510, Short.MAX_VALUE)
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(layout.createSequentialGroup()
-                    .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGap(0, 0, Short.MAX_VALUE)))
+                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 510, Short.MAX_VALUE))
         );
 
         pack();
@@ -146,16 +238,132 @@ public class HMPage extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jLabel2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel2MouseClicked
-        MainPage mpg = new MainPage();
+        LoginPage mpg = new LoginPage();
         mpg.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_jLabel2MouseClicked
 
-    private void jLabel7MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel7MouseClicked
-       Dashboard dsh = new Dashboard();
-       dsh.setVisible(true);
-       this.dispose();
-    }//GEN-LAST:event_jLabel7MouseClicked
+    private void formWindowActivated(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowActivated
+      Session sess = Session.getInstance();
+      
+      if(sess.getUid() == 0){
+      JOptionPane.showMessageDialog(null, "No Shortcut Allowed you Muffin!, Login First! ;)");
+        LoginPage mpg = new LoginPage();
+        mpg.setVisible(true);
+        this.dispose();
+      }else{
+      acc_name.setText(""+sess.getFname());
+      }
+      
+    }//GEN-LAST:event_formWindowActivated
+
+    private void jLabel3MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel3MouseClicked
+        usersForm usf = new usersForm();
+        usf.setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_jLabel3MouseClicked
+
+    private void p_roomMouseDragged(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_p_roomMouseDragged
+
+    }//GEN-LAST:event_p_roomMouseDragged
+
+    private void p_roomMouseMoved(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_p_roomMouseMoved
+        p_room.setBackground(hovercolor);
+    }//GEN-LAST:event_p_roomMouseMoved
+
+    private void p_roomMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_p_roomMouseClicked
+        roomsForm rmf = new roomsForm();
+        rmf.setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_p_roomMouseClicked
+
+    private void p_roomMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_p_roomMouseEntered
+
+    }//GEN-LAST:event_p_roomMouseEntered
+
+    private void p_roomMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_p_roomMouseExited
+        p_room.setBackground(exitcolor);
+    }//GEN-LAST:event_p_roomMouseExited
+
+    private void p_userMouseDragged(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_p_userMouseDragged
+        // TODO add your handling code here:
+    }//GEN-LAST:event_p_userMouseDragged
+
+    private void p_userMouseMoved(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_p_userMouseMoved
+        p_user.setBackground(hovercolor);  
+    }//GEN-LAST:event_p_userMouseMoved
+
+    private void p_userMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_p_userMouseClicked
+        usersForm usf = new usersForm();
+        usf.setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_p_userMouseClicked
+
+    private void p_userMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_p_userMouseEntered
+        // TODO add your handling code here:
+    }//GEN-LAST:event_p_userMouseEntered
+
+    private void p_userMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_p_userMouseExited
+        p_user.setBackground(exitcolor);  
+    }//GEN-LAST:event_p_userMouseExited
+
+    private void p_bookingsMouseDragged(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_p_bookingsMouseDragged
+        // TODO add your handling code here:
+    }//GEN-LAST:event_p_bookingsMouseDragged
+
+    private void p_bookingsMouseMoved(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_p_bookingsMouseMoved
+        p_bookings.setBackground(hovercolor); 
+    }//GEN-LAST:event_p_bookingsMouseMoved
+
+    private void p_bookingsMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_p_bookingsMouseClicked
+        bookingsForm bkf = new bookingsForm();
+        bkf.setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_p_bookingsMouseClicked
+
+    private void p_bookingsMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_p_bookingsMouseEntered
+        // TODO add your handling code here:
+    }//GEN-LAST:event_p_bookingsMouseEntered
+
+    private void p_bookingsMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_p_bookingsMouseExited
+        p_bookings.setBackground(exitcolor); 
+    }//GEN-LAST:event_p_bookingsMouseExited
+
+    private void jLabel5MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel5MouseClicked
+        roomsForm rmf = new roomsForm();
+        rmf.setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_jLabel5MouseClicked
+
+    private void jLabel6MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel6MouseClicked
+        bookingsForm bkf = new bookingsForm();
+        bkf.setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_jLabel6MouseClicked
+
+    private void jLabel3MouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel3MouseExited
+        p_user.setBackground(exitcolor);  
+    }//GEN-LAST:event_jLabel3MouseExited
+
+    private void jLabel3MouseMoved(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel3MouseMoved
+        p_user.setBackground(hovercolor);  
+    }//GEN-LAST:event_jLabel3MouseMoved
+
+    private void jLabel6MouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel6MouseExited
+        p_bookings.setBackground(exitcolor); 
+    }//GEN-LAST:event_jLabel6MouseExited
+
+    private void jLabel6MouseMoved(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel6MouseMoved
+        p_bookings.setBackground(hovercolor); 
+    }//GEN-LAST:event_jLabel6MouseMoved
+
+    private void jLabel5MouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel5MouseExited
+        p_room.setBackground(exitcolor);
+    }//GEN-LAST:event_jLabel5MouseExited
+
+    private void jLabel5MouseMoved(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel5MouseMoved
+        p_room.setBackground(hovercolor);
+    }//GEN-LAST:event_jLabel5MouseMoved
 
     /**
      * @param args the command line arguments
@@ -193,16 +401,17 @@ public class HMPage extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JLabel acc_name;
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
-    private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JPanel jPanel1;
-    private javax.swing.JPanel jPanel2;
-    private javax.swing.JPanel jPanel3;
-    private javax.swing.JPanel jPanel4;
-    private javax.swing.JPanel jPanel5;
-    private javax.swing.JPanel jPanel6;
+    private javax.swing.JPanel p_bookings;
+    private javax.swing.JPanel p_room;
+    private javax.swing.JPanel p_user;
     // End of variables declaration//GEN-END:variables
 }
