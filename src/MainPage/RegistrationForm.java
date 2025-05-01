@@ -3,20 +3,23 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package hbsguiromo;
+package MainPage;
 
-import Admin.HMPage;
-import Admin.usersForm;
-import Staff.FDSPage;
-import RCoordinator.RCPage;
 import config.HashPass;
-import config.Session;
 import config.dbConnector;
+import java.awt.Color;
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.StandardCopyOption;
 import java.security.NoSuchAlgorithmException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.Arrays;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+import javax.swing.BorderFactory;
 import javax.swing.JOptionPane;
+import javax.swing.border.Border;
 
 /**
  *
@@ -30,7 +33,31 @@ public class RegistrationForm extends javax.swing.JFrame {
     public RegistrationForm() {
         initComponents();
         this.setResizable(false);
+        Border line = BorderFactory.createLineBorder(Color.BLACK);
+        Border margin = BorderFactory.createEmptyBorder(5, 10, 5, 10);
+        Border compound = BorderFactory.createCompoundBorder(line, margin);
+
+fn.setBorder(compound);
+ln.setBorder(compound);
+em.setBorder(compound);
+cn.setBorder(compound);
+un.setBorder(compound);
+ps.setBorder(compound);
+ag.setBorder(compound);
     }
+    
+    private boolean canSelectImage = true;
+    
+    public String destination = "";
+    File selectedFile;
+    public String oldpath;
+    public String path;
+    
+     Color hovercolor = new Color(255,255,255);
+     Color exitcolor = new Color(0,0,153);
+     Color foregroundcolor = new Color(0,0,0);
+     Color exitforegroundcolor = new Color(255,255,255);
+     
     
     public static String email, username;
     
@@ -84,10 +111,6 @@ public class RegistrationForm extends javax.swing.JFrame {
         jLabel1 = new javax.swing.JLabel();
         ag = new javax.swing.JTextField();
         jLabel4 = new javax.swing.JLabel();
-        bk = new javax.swing.JButton();
-        rg = new javax.swing.JButton();
-        jLabel6 = new javax.swing.JLabel();
-        jPanel2 = new javax.swing.JPanel();
         em = new javax.swing.JTextField();
         un = new javax.swing.JTextField();
         ln = new javax.swing.JTextField();
@@ -101,30 +124,37 @@ public class RegistrationForm extends javax.swing.JFrame {
         at = new javax.swing.JComboBox<>();
         jLabel3 = new javax.swing.JLabel();
         jLabel9 = new javax.swing.JLabel();
-        hide = new javax.swing.JLabel();
-        show = new javax.swing.JLabel();
         ps = new javax.swing.JPasswordField();
         fn = new javax.swing.JTextField();
+        r_button = new javax.swing.JLabel();
+        jPanel3 = new javax.swing.JPanel();
+        jLabel6 = new javax.swing.JLabel();
+        minimize1 = new javax.swing.JLabel();
+        exit1 = new javax.swing.JLabel();
+        b_button = new javax.swing.JLabel();
+        s_pass = new javax.swing.JCheckBox();
 
         jPasswordField1.setText("jPasswordField1");
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setUndecorated(true);
         addWindowListener(new java.awt.event.WindowAdapter() {
             public void windowActivated(java.awt.event.WindowEvent evt) {
                 formWindowActivated(evt);
             }
         });
 
-        jPanel1.setBackground(new java.awt.Color(0, 0, 0));
+        jPanel1.setBackground(new java.awt.Color(255, 255, 255));
+        jPanel1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
         jPanel1.setForeground(new java.awt.Color(255, 255, 255));
         jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jLabel1.setBackground(new java.awt.Color(255, 255, 255));
-        jLabel1.setFont(new java.awt.Font("Arial Narrow", 0, 18)); // NOI18N
-        jLabel1.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel1.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jLabel1.setText("Account Type:");
         jPanel1.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(153, 443, 100, 30));
 
+        ag.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         ag.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 agActionPerformed(evt);
@@ -135,66 +165,24 @@ public class RegistrationForm extends javax.swing.JFrame {
                 agKeyTyped(evt);
             }
         });
-        jPanel1.add(ag, new org.netbeans.lib.awtextra.AbsoluteConstraints(403, 343, 130, 30));
+        jPanel1.add(ag, new org.netbeans.lib.awtextra.AbsoluteConstraints(400, 350, 130, 30));
 
-        jLabel4.setFont(new java.awt.Font("Arial Narrow", 0, 18)); // NOI18N
-        jLabel4.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel4.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jLabel4.setText("Lastname:");
         jPanel1.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(133, 133, -1, 30));
 
-        bk.setBackground(new java.awt.Color(255, 255, 255));
-        bk.setFont(new java.awt.Font("Arial Narrow", 0, 18)); // NOI18N
-        bk.setText("Back");
-        bk.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                bkActionPerformed(evt);
-            }
-        });
-        jPanel1.add(bk, new org.netbeans.lib.awtextra.AbsoluteConstraints(213, 383, 150, 40));
-
-        rg.setBackground(new java.awt.Color(255, 255, 255));
-        rg.setFont(new java.awt.Font("Arial Narrow", 0, 18)); // NOI18N
-        rg.setText("Register");
-        rg.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                rgActionPerformed(evt);
-            }
-        });
-        rg.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyTyped(java.awt.event.KeyEvent evt) {
-                rgKeyTyped(evt);
-            }
-        });
-        jPanel1.add(rg, new org.netbeans.lib.awtextra.AbsoluteConstraints(383, 383, 150, 40));
-
-        jLabel6.setFont(new java.awt.Font("Arial Black", 1, 18)); // NOI18N
-        jLabel6.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel6.setText("REGISTRATION FORM");
-        jPanel1.add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(243, 13, 250, 60));
-
-        jPanel2.setBackground(new java.awt.Color(0, 0, 0));
-
-        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
-        jPanel2.setLayout(jPanel2Layout);
-        jPanel2Layout.setHorizontalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 8, Short.MAX_VALUE)
-        );
-        jPanel2Layout.setVerticalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
-        );
-
-        jPanel1.add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(724, 0, -1, 510));
-
+        em.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         em.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyTyped(java.awt.event.KeyEvent evt) {
                 emKeyTyped(evt);
             }
         });
         jPanel1.add(em, new org.netbeans.lib.awtextra.AbsoluteConstraints(213, 173, 320, 30));
+
+        un.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jPanel1.add(un, new org.netbeans.lib.awtextra.AbsoluteConstraints(213, 253, 320, 30));
 
+        ln.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         ln.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyTyped(java.awt.event.KeyEvent evt) {
                 lnKeyTyped(evt);
@@ -202,34 +190,32 @@ public class RegistrationForm extends javax.swing.JFrame {
         });
         jPanel1.add(ln, new org.netbeans.lib.awtextra.AbsoluteConstraints(213, 133, 320, 30));
 
-        jLabel5.setFont(new java.awt.Font("Arial Narrow", 0, 18)); // NOI18N
-        jLabel5.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel5.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jLabel5.setText("C Number:");
         jPanel1.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(133, 213, -1, 30));
 
-        jLabel11.setFont(new java.awt.Font("Arial Narrow", 0, 18)); // NOI18N
-        jLabel11.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel11.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jLabel11.setText("Firstname:");
         jPanel1.add(jLabel11, new org.netbeans.lib.awtextra.AbsoluteConstraints(133, 93, -1, 30));
 
-        jLabel12.setFont(new java.awt.Font("Arial Narrow", 0, 18)); // NOI18N
-        jLabel12.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel12.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jLabel12.setText("Username:");
         jPanel1.add(jLabel12, new org.netbeans.lib.awtextra.AbsoluteConstraints(133, 253, -1, 30));
 
+        gd.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         gd.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Male", "Female" }));
         gd.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 gdActionPerformed(evt);
             }
         });
-        jPanel1.add(gd, new org.netbeans.lib.awtextra.AbsoluteConstraints(213, 343, 130, 30));
+        jPanel1.add(gd, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 350, 130, 30));
 
-        jLabel2.setFont(new java.awt.Font("Arial Narrow", 0, 18)); // NOI18N
-        jLabel2.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel2.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jLabel2.setText("Age:");
-        jPanel1.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(363, 343, -1, 30));
+        jPanel1.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(360, 350, -1, 30));
 
+        cn.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         cn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 cnActionPerformed(evt);
@@ -242,46 +228,23 @@ public class RegistrationForm extends javax.swing.JFrame {
         });
         jPanel1.add(cn, new org.netbeans.lib.awtextra.AbsoluteConstraints(213, 213, 320, 30));
 
-        jLabel8.setFont(new java.awt.Font("Arial Narrow", 0, 18)); // NOI18N
-        jLabel8.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel8.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jLabel8.setText("Email:");
         jPanel1.add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(133, 173, -1, 30));
 
-        at.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Front Desk Staff", "Room Coordinator", "Admin" }));
+        at.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        at.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Admin", "User" }));
         jPanel1.add(at, new org.netbeans.lib.awtextra.AbsoluteConstraints(253, 443, 180, 30));
 
-        jLabel3.setFont(new java.awt.Font("Arial Narrow", 0, 18)); // NOI18N
-        jLabel3.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel3.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jLabel3.setText("Password:");
         jPanel1.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(133, 293, -1, 30));
 
-        jLabel9.setFont(new java.awt.Font("Arial Narrow", 0, 18)); // NOI18N
-        jLabel9.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel9.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jLabel9.setText("Gender:");
-        jPanel1.add(jLabel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(153, 343, -1, 30));
+        jPanel1.add(jLabel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 350, -1, 30));
 
-        hide.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/hide.png"))); // NOI18N
-        hide.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                hideMouseClicked(evt);
-            }
-            public void mousePressed(java.awt.event.MouseEvent evt) {
-                hideMousePressed(evt);
-            }
-            public void mouseReleased(java.awt.event.MouseEvent evt) {
-                hideMouseReleased(evt);
-            }
-        });
-        jPanel1.add(hide, new org.netbeans.lib.awtextra.AbsoluteConstraints(510, 300, -1, -1));
-
-        show.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/show.png"))); // NOI18N
-        show.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                showMouseClicked(evt);
-            }
-        });
-        jPanel1.add(show, new org.netbeans.lib.awtextra.AbsoluteConstraints(510, 300, -1, -1));
-
+        ps.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         ps.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 psActionPerformed(evt);
@@ -289,6 +252,7 @@ public class RegistrationForm extends javax.swing.JFrame {
         });
         jPanel1.add(ps, new org.netbeans.lib.awtextra.AbsoluteConstraints(213, 293, 320, 30));
 
+        fn.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         fn.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyTyped(java.awt.event.KeyEvent evt) {
                 fnKeyTyped(evt);
@@ -296,85 +260,125 @@ public class RegistrationForm extends javax.swing.JFrame {
         });
         jPanel1.add(fn, new org.netbeans.lib.awtextra.AbsoluteConstraints(213, 93, 320, 30));
 
+        r_button.setBackground(new java.awt.Color(0, 0, 153));
+        r_button.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        r_button.setForeground(new java.awt.Color(255, 255, 255));
+        r_button.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        r_button.setText("Register");
+        r_button.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        r_button.setOpaque(true);
+        r_button.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                r_buttonMouseClicked(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                r_buttonMouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                r_buttonMouseExited(evt);
+            }
+        });
+        jPanel1.add(r_button, new org.netbeans.lib.awtextra.AbsoluteConstraints(390, 390, 150, 40));
+
+        jPanel3.setBackground(new java.awt.Color(0, 0, 153));
+        jPanel3.setLayout(null);
+
+        jLabel6.setFont(new java.awt.Font("Arial Black", 1, 14)); // NOI18N
+        jLabel6.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel6.setText("REGISTRATION FORM");
+        jPanel3.add(jLabel6);
+        jLabel6.setBounds(10, 10, 230, 40);
+
+        minimize1.setBackground(new java.awt.Color(0, 0, 153));
+        minimize1.setFont(new java.awt.Font("Arial Black", 1, 18)); // NOI18N
+        minimize1.setForeground(new java.awt.Color(255, 255, 255));
+        minimize1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        minimize1.setText("—");
+        minimize1.setOpaque(true);
+        minimize1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                minimize1MouseClicked(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                minimize1MouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                minimize1MouseExited(evt);
+            }
+        });
+        jPanel3.add(minimize1);
+        minimize1.setBounds(650, 10, 40, 30);
+
+        exit1.setBackground(new java.awt.Color(0, 0, 153));
+        exit1.setFont(new java.awt.Font("Arial Black", 1, 14)); // NOI18N
+        exit1.setForeground(new java.awt.Color(255, 255, 255));
+        exit1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        exit1.setText("X");
+        exit1.setOpaque(true);
+        exit1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                exit1MouseClicked(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                exit1MouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                exit1MouseExited(evt);
+            }
+        });
+        jPanel3.add(exit1);
+        exit1.setBounds(690, 10, 40, 30);
+
+        jPanel1.add(jPanel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 740, 60));
+
+        b_button.setBackground(new java.awt.Color(0, 0, 153));
+        b_button.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        b_button.setForeground(new java.awt.Color(255, 255, 255));
+        b_button.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        b_button.setText("Back");
+        b_button.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        b_button.setOpaque(true);
+        b_button.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                b_buttonMouseClicked(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                b_buttonMouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                b_buttonMouseExited(evt);
+            }
+        });
+        jPanel1.add(b_button, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 390, 150, 40));
+
+        s_pass.setBackground(new java.awt.Color(255, 255, 255));
+        s_pass.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        s_pass.setText("Show Password");
+        s_pass.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                s_passActionPerformed(evt);
+            }
+        });
+        jPanel1.add(s_pass, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 325, 320, 20));
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 732, Short.MAX_VALUE)
+            .addGap(0, 740, Short.MAX_VALUE)
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 510, Short.MAX_VALUE)
+            .addGap(0, 512, Short.MAX_VALUE)
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 512, Short.MAX_VALUE))
         );
 
         pack();
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
-
-    private void bkActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bkActionPerformed
-        LoginPage mp = new LoginPage();
-        mp.setVisible(true);
-        this.dispose();
-    }//GEN-LAST:event_bkActionPerformed
-
-    private void rgActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rgActionPerformed
-         
-        
-    dbConnector dbc = new dbConnector();    
-
-    if (fn.getText().isEmpty() || ln.getText().isEmpty() || em.getText().isEmpty() || 
-        cn.getText().isEmpty() || un.getText().isEmpty() || ps.getPassword().length == 0 || 
-        ag.getText().isEmpty()) {
-        
-        JOptionPane.showMessageDialog(null, "All fields are required!");
-        return; 
-    }
-
-    String password = new String(ps.getPassword());
-
-    if (password.length() < 8) {
-        JOptionPane.showMessageDialog(null, "Password must be at least 8 characters long!");
-        ps.setText("");
-        return;
-    }
-
-    String email = em.getText();
-    if (!email.endsWith("@gmail.com")) {
-        JOptionPane.showMessageDialog(null, "Email must end with @gmail.com");
-        return;
-    }
-
-    if (duplicateCheck()) {
-        System.out.println("Duplicate Exist");
-        return;
-    }
-    
-    try{
-    String pass = HashPass.hashPassword(new String(ps.getPassword()));
-    
-    if (dbc.insertData("INSERT INTO tbl_user (u_fname, u_lname, u_email, u_cnum, u_usern, u_pass, u_gen, u_age, u_type, u_status) "
-            + "VALUES ('" + fn.getText() + "', '" + ln.getText() + "', '" + email + "', '" + cn.getText() + "', '"
-            + un.getText() + "', '" + pass + "', '" + gd.getSelectedItem() + "', '" + ag.getText() + "', '"
-            + at.getSelectedItem() + "', 'Inactive')")) {
-
-        JOptionPane.showMessageDialog(null, "Registered Successfully!");
-        LoginPage mp = new LoginPage();
-        mp.setVisible(true);
-        this.dispose();
-    } else {
-        JOptionPane.showMessageDialog(null, "Registration Failed. Please try again.");
-    }
-    
-    }catch(NoSuchAlgorithmException ex){  
-        System.out.println(""+ex);   
-    }
-          
-        
-    }//GEN-LAST:event_rgActionPerformed
 
     private void gdActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_gdActionPerformed
         // TODO add your handling code here:
@@ -426,59 +430,167 @@ public class RegistrationForm extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_agActionPerformed
 
-    private void rgKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_rgKeyTyped
-       String accountType = (String) at.getSelectedItem(); // Get selected account type
-
-    if (accountType == null || accountType.isEmpty()) {
-        JOptionPane.showMessageDialog(this, "Please select an account type first.", "Error", JOptionPane.ERROR_MESSAGE);
-        return; // Stop further processing
-    }
-
-    switch (accountType) {
-        case "Front Desk Staff":
-            FDSPage fds = new FDSPage();
-            fds.setVisible(true);
-            this.dispose();
-            break;
-        case "Room Coordinator":
-            RCPage rcp = new RCPage();
-            rcp.setVisible(true);
-            this.dispose();
-            break;
-        case "Hotel Manger(Admin)":
-            HMPage hmp = new HMPage();
-            hmp.setVisible(true);
-            this.dispose();
-            break;
-        default:
-            JOptionPane.showMessageDialog(this, "Invalid account type.", "Error", JOptionPane.ERROR_MESSAGE);
-            break;
-    }
-    }//GEN-LAST:event_rgKeyTyped
-
     private void formWindowActivated(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowActivated
-      
+  
     }//GEN-LAST:event_formWindowActivated
 
-    private void hideMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_hideMousePressed
+    private void r_buttonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_r_buttonMouseClicked
+            dbConnector dbc = new dbConnector();    
+
+    if (fn.getText().isEmpty() || ln.getText().isEmpty() || em.getText().isEmpty() || 
+        cn.getText().isEmpty() || un.getText().isEmpty() || ps.getPassword().length == 0 || 
+        ag.getText().isEmpty()) {
         
-    }//GEN-LAST:event_hideMousePressed
+        JOptionPane.showMessageDialog(null, "All fields are required!");
+        return; 
+    }
+    
+if (!fn.getText().matches("^[a-zA-Z\\s]+$")) {
+    JOptionPane.showMessageDialog(null, "First name must not contain numbers or special characters.");
+        return;
+    }
 
-    private void hideMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_hideMouseReleased
+if (!ln.getText().matches("^[a-zA-Z\\s]+$")) {
+        JOptionPane.showMessageDialog(null, "Last name must not contain numbers or special characters.");
+        return;
+    }
+
+if (!cn.getText().matches("\\d+")) {
+        JOptionPane.showMessageDialog(null, "Contact number must contain digits only.");
+        return;
+    }
+
+if (!ag.getText().matches("\\d+")) {
+        JOptionPane.showMessageDialog(null, "Age must contain digits only.");
+        return;
+    }
+
+    String password = new String(ps.getPassword());
+if (password.length() < 8) {
+        JOptionPane.showMessageDialog(null, "Password must be at least 8 characters long!");
+        ps.setText("");
+        return;
+    }
+
+    String email = em.getText();
+    String emailRegex = "^[a-zA-Z0-9_+&*-]+(?:\\.[a-zA-Z0-9_+&*-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,7}$";
+    Pattern pattern = Pattern.compile(emailRegex);
+    Matcher matcher = pattern.matcher(email);
+
+    if (!matcher.matches()) {
+        JOptionPane.showMessageDialog(null, "Please enter a valid email address.");
+        return;
+    }
+
+    if (duplicateCheck()) {
+        System.out.println("Duplicate Exist");
+        return;
+    }
+
+    try {
         
-    }//GEN-LAST:event_hideMouseReleased
+        String pass = HashPass.hashPassword(new String(ps.getPassword()));
+        String userImagePath = "";
+        
+        if (selectedFile != null) { 
+            userImagePath = destination;
+        }
+        
+        boolean inserted = dbc.insertData("INSERT INTO tbl_user (u_fname, u_lname, u_email, u_cnum, u_usern, u_pass, u_gen, u_age, u_type, u_status, u_image) "
+                + "VALUES ('" + fn.getText() + "', '" + ln.getText() + "', '" + email + "', '" + cn.getText() + "', '"
+                + un.getText() + "', '" + pass + "', '" + gd.getSelectedItem() + "', '" + ag.getText() + "', '"
+                + at.getSelectedItem() + "', 'Inactive', '" + userImagePath + "')");
 
-    private void hideMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_hideMouseClicked
-        show.setVisible(true);
-        hide.setVisible(false);
-        ps.setEchoChar((char)0);
-    }//GEN-LAST:event_hideMouseClicked
+        if (!inserted) {
+            JOptionPane.showMessageDialog(null, "Registration Failed. Please try again.");
+            return;
+        }
 
-    private void showMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_showMouseClicked
-        show.setVisible(false);
-        hide.setVisible(true);
-        ps.setEchoChar('*');
-    }//GEN-LAST:event_showMouseClicked
+        if (selectedFile != null) {
+            try {
+                Files.copy(selectedFile.toPath(), new File(destination).toPath(), StandardCopyOption.REPLACE_EXISTING);
+            } catch (IOException ex) {
+                System.out.println("Failed to copy image file: " + ex);
+                return;
+            }
+        }
+
+        
+        if (inserted) {
+            JOptionPane.showMessageDialog(null, "Registered Successfully!");
+            LoginPage mp = new LoginPage();
+            mp.setVisible(true);
+            this.dispose();
+        } else {
+            JOptionPane.showMessageDialog(null, "Registration Failed. Please try again.");
+        }
+
+    } catch (NoSuchAlgorithmException ex) {
+        System.out.println("" + ex);
+    }
+    }//GEN-LAST:event_r_buttonMouseClicked
+
+    private void r_buttonMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_r_buttonMouseEntered
+        r_button.setBackground(hovercolor);
+        r_button.setForeground(foregroundcolor);
+    }//GEN-LAST:event_r_buttonMouseEntered
+
+    private void r_buttonMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_r_buttonMouseExited
+        r_button.setBackground(exitcolor);
+        r_button.setForeground(exitforegroundcolor);
+    }//GEN-LAST:event_r_buttonMouseExited
+
+    private void b_buttonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_b_buttonMouseClicked
+        LoginPage mp = new LoginPage();
+        mp.setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_b_buttonMouseClicked
+
+    private void b_buttonMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_b_buttonMouseEntered
+        b_button.setBackground(hovercolor);
+        b_button.setForeground(foregroundcolor);
+    }//GEN-LAST:event_b_buttonMouseEntered
+
+    private void b_buttonMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_b_buttonMouseExited
+        b_button.setBackground(exitcolor);
+        b_button.setForeground(exitforegroundcolor);
+    }//GEN-LAST:event_b_buttonMouseExited
+
+    private void s_passActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_s_passActionPerformed
+        if(s_pass.isSelected()){
+            ps.setEchoChar((char)0);
+        }  else {
+            ps.setEchoChar('●');
+        }
+    }//GEN-LAST:event_s_passActionPerformed
+
+    private void minimize1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_minimize1MouseClicked
+        setState(ICONIFIED);
+    }//GEN-LAST:event_minimize1MouseClicked
+
+    private void minimize1MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_minimize1MouseEntered
+        minimize1.setBackground(new java.awt.Color(240,240,240));
+        minimize1.setForeground(new java.awt.Color(0,0,0));
+    }//GEN-LAST:event_minimize1MouseEntered
+
+    private void minimize1MouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_minimize1MouseExited
+        minimize1.setBackground(new java.awt.Color(0,0,153));
+        minimize1.setForeground(new java.awt.Color(255,255,255));
+    }//GEN-LAST:event_minimize1MouseExited
+
+    private void exit1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_exit1MouseClicked
+        System.exit(0);
+    }//GEN-LAST:event_exit1MouseClicked
+
+    private void exit1MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_exit1MouseEntered
+        exit1.setBackground(new java.awt.Color(240,240,240));
+        exit1.setForeground(new java.awt.Color(0,0,0));
+    }//GEN-LAST:event_exit1MouseEntered
+
+    private void exit1MouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_exit1MouseExited
+        exit1.setBackground(new java.awt.Color(0,0,153));
+        exit1.setForeground(new java.awt.Color(255,255,255));
+    }//GEN-LAST:event_exit1MouseExited
 
     /**
      * @param args the command line arguments
@@ -491,7 +603,7 @@ public class RegistrationForm extends javax.swing.JFrame {
          */
         try {
             for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
+                if ("Windows".equals(info.getName())) {
                     javax.swing.UIManager.setLookAndFeel(info.getClassName());
                     break;
                 }
@@ -518,12 +630,12 @@ public class RegistrationForm extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTextField ag;
     private javax.swing.JComboBox<String> at;
-    private javax.swing.JButton bk;
+    private javax.swing.JLabel b_button;
     private javax.swing.JTextField cn;
     private javax.swing.JTextField em;
+    private javax.swing.JLabel exit1;
     private javax.swing.JTextField fn;
     private javax.swing.JComboBox<String> gd;
-    private javax.swing.JLabel hide;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel12;
@@ -535,12 +647,13 @@ public class RegistrationForm extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
-    private javax.swing.JPanel jPanel2;
+    private javax.swing.JPanel jPanel3;
     private javax.swing.JPasswordField jPasswordField1;
     private javax.swing.JTextField ln;
+    private javax.swing.JLabel minimize1;
     private javax.swing.JPasswordField ps;
-    private javax.swing.JButton rg;
-    private javax.swing.JLabel show;
+    private javax.swing.JLabel r_button;
+    private javax.swing.JCheckBox s_pass;
     private javax.swing.JTextField un;
     // End of variables declaration//GEN-END:variables
 }

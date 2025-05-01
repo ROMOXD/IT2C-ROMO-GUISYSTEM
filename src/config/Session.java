@@ -12,10 +12,12 @@ public class Session {
    private String email;
    private String cnum;
    private String username;
+   private String password;
    private String gender;
    private String age;
    private String type;
    private String status;
+   private String u_image;
    
    private Session(){
    
@@ -83,6 +85,14 @@ public class Session {
         this.username = username;
     }
 
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
     public String getGender() {
         return gender;
     }
@@ -114,6 +124,16 @@ public class Session {
     public void setStatus(String status) {
         this.status = status;
     }
+
+    public String getU_image() {
+        return u_image;
+    }
+
+    public void setU_image(String u_image) {
+        this.u_image = u_image;
+    }
+    
+    
    
    
    
