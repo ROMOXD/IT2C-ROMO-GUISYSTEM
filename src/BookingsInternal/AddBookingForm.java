@@ -32,6 +32,8 @@ import javax.swing.JFileChooser;
 import javax.swing.JLabel;
 import javax.swing.SwingUtilities;
 import javax.swing.border.Border;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 
 /**
  *
@@ -59,6 +61,24 @@ public class AddBookingForm extends javax.swing.JInternalFrame {
     g_cs.setBorder(compound);
     g_cng.setBorder(compound);
     roomComboBox.setBorder(compound);
+    
+    g_cng.setEditable(false);
+
+    g_cs.getDocument().addDocumentListener(new DocumentListener() {
+        public void insertUpdate(DocumentEvent e) {
+            updateChange();
+        }
+
+        public void removeUpdate(DocumentEvent e) {
+            updateChange();
+        }
+
+        public void changedUpdate(DocumentEvent e) {
+            updateChange();
+        }
+    });
+    
+    
 
         
     }
@@ -261,6 +281,32 @@ while (rs.next()) {
 
     return true;
     }
+    
+    private void updateChange() {
+    try {
+        String selectedItem = (String) roomComboBox.getSelectedItem();
+        if (selectedItem == null || selectedItem.isEmpty()) {
+            g_cng.setText("0.00");
+            return;
+        }
+
+        String roomId = selectedItem.split(":")[0].trim();
+
+        dbConnector dbc = new dbConnector();
+        ResultSet rs = dbc.getData("SELECT r_price FROM tbl_room WHERE room_id = '" + roomId + "'");
+        if (rs.next()) {
+            double price = rs.getDouble("r_price");
+            double cash = Double.parseDouble(g_cs.getText());
+            double change = cash >= price ? cash - price : 0;
+            g_cng.setText(String.format("%.2f", change));
+        } else {
+            g_cng.setText("0.00");
+        }
+        rs.close();
+    } catch (Exception e) {
+        g_cng.setText("0.00");
+    }
+}
     
     
 

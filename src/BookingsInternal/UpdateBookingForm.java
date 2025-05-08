@@ -33,6 +33,8 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 import javax.swing.border.Border;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 import net.proteanit.sql.DbUtils;
 
 /**
@@ -69,6 +71,22 @@ public class UpdateBookingForm extends javax.swing.JInternalFrame {
     g_cs.setBorder(compound);
     g_cng.setBorder(compound);
     roomComboBox.setBorder(compound);
+    
+    g_cng.setEditable(false);
+
+    g_cs.getDocument().addDocumentListener(new DocumentListener() {
+        public void insertUpdate(DocumentEvent e) {
+            updateChange();
+        }
+
+        public void removeUpdate(DocumentEvent e) {
+            updateChange();
+        }
+
+        public void changedUpdate(DocumentEvent e) {
+            updateChange();
+        }
+    });
     
     i_select.setEnabled(false);
     i_remove.setEnabled(false);
@@ -329,35 +347,6 @@ public class UpdateBookingForm extends javax.swing.JInternalFrame {
     
     }
     
-    public boolean updateCheck(){
-    
-    dbConnector dbc = new dbConnector();
-    
-    try{
-    String query = "SELECT * FROM tbl_booking WHERE (g_email = '" +g_em.getText()+"') AND b_id != '"+booking_id.getText()+"' ";
-    ResultSet resultSet = dbc.getData(query);
-    
-    
-    if(resultSet.next()){
-    email=resultSet.getString("g_email");
-    
-    if(email.equals(g_em.getText())){
-    JOptionPane.showMessageDialog(null, "Email Already Existed!");
-    g_em.setText("");
-    }
-    
-    return true;
-    }else{
-    return false;
-    }
-    
-    }catch(SQLException ex){
-        System.out.println(""+ex);
-        return false;
-    }
-    
-    
-    }
     
     private boolean validateInputs() {
         if (g_fn.getText().isEmpty() || g_ln.getText().isEmpty() || g_ag.getText().isEmpty() || g_em.getText().isEmpty()) {
@@ -402,11 +391,6 @@ public class UpdateBookingForm extends javax.swing.JInternalFrame {
         JOptionPane.showMessageDialog(this, "Invalid email format.");
         return false;
     }
-    
-    if (updateCheck()) {
-        System.out.println("Duplicate Exist");
-        return false;
-    }
 
     Date checkInDate = c_cin.getDate();
     Date checkOutDate = c_cout.getDate();
@@ -426,6 +410,32 @@ public class UpdateBookingForm extends javax.swing.JInternalFrame {
     this.canSelectImage = value;
     i_select.setEnabled(value);
     i_remove.setEnabled(value);
+}
+    
+     private void updateChange() {
+    try {
+        String selectedItem = (String) roomComboBox.getSelectedItem();
+        if (selectedItem == null || selectedItem.isEmpty()) {
+            g_cng.setText("0.00");
+            return;
+        }
+
+        String roomId = selectedItem.split(":")[0].trim();
+
+        dbConnector dbc = new dbConnector();
+        ResultSet rs = dbc.getData("SELECT r_price FROM tbl_room WHERE room_id = '" + roomId + "'");
+        if (rs.next()) {
+            double price = rs.getDouble("r_price");
+            double cash = Double.parseDouble(g_cs.getText());
+            double change = cash >= price ? cash - price : 0;
+            g_cng.setText(String.format("%.2f", change));
+        } else {
+            g_cng.setText("0.00");
+        }
+        rs.close();
+    } catch (Exception e) {
+        g_cng.setText("0.00");
+    }
 }
     
     
