@@ -102,7 +102,7 @@ public class DeleteBookingForm extends javax.swing.JInternalFrame {
     public void displayData(){
         try{
             dbConnector dbc = new dbConnector();
-            ResultSet rs = dbc.getData("SELECT b_id, g_fname, rm_type FROM tbl_bookings");
+            ResultSet rs = dbc.getData("SELECT b_id, g_fname, rm_type, b_status FROM tbl_bookings WHERE b_status = 'Pending'");
             bkTable.setModel(DbUtils.resultSetToTableModel(rs));
              rs.close();
         }catch(SQLException ex){
