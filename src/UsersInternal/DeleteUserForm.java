@@ -18,6 +18,7 @@ import javax.swing.BorderFactory;
 import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 import javax.swing.border.Border;
+import javax.swing.table.TableColumnModel;
 import net.proteanit.sql.DbUtils;
 
 /**
@@ -61,6 +62,14 @@ public class DeleteUserForm extends javax.swing.JInternalFrame {
     un.setBorder(compound);
     ag.setBorder(compound);
     at.setBorder(compound);
+    
+    TableColumnModel columnModel = usersTable.getColumnModel();
+       
+        columnModel.getColumn(0).setHeaderValue("ID");
+        columnModel.getColumn(1).setHeaderValue("FIRSTNAME");
+        columnModel.getColumn(2).setHeaderValue("USERNAME");
+
+    usersTable.getTableHeader().repaint();
     
     usersTable.addMouseListener(new java.awt.event.MouseAdapter() {
     public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -274,7 +283,6 @@ public class DeleteUserForm extends javax.swing.JInternalFrame {
         });
         jPanel3.add(cn, new org.netbeans.lib.awtextra.AbsoluteConstraints(410, 50, 170, 30));
 
-        usersTable.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         usersTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
@@ -408,10 +416,14 @@ if (confirmation == JOptionPane.YES_OPTION) {
         if (imagePath != null && !imagePath.isEmpty()) {
             deleteImage(imagePath);
         }
+        
+    Session sess = Session.getInstance();
+        String action = "Deleted User Record with ID of " + userId;
+        dbc.insertData("INSERT INTO tbl_logs (usr_id, l_actions, l_date) VALUES ('"
+    + sess.getUid() + "', '" + action + "', '" + java.time.LocalDateTime.now() + "')");
 
         JOptionPane.showMessageDialog(null, "User deleted successfully!");
         
-    Session sess = Session.getInstance();
     String type = sess.getType();
 
     if (type.equals("Admin")) {

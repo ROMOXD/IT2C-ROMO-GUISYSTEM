@@ -66,7 +66,7 @@ public class AdminPage extends javax.swing.JFrame {
 
         jPanel1 = new javax.swing.JPanel();
         jPanel2 = new javax.swing.JPanel();
-        jLabel2 = new javax.swing.JLabel();
+        checkOut = new javax.swing.JLabel();
         jLabel13 = new javax.swing.JLabel();
         acc_uname = new javax.swing.JLabel();
         l_pendings = new javax.swing.JLabel();
@@ -76,6 +76,7 @@ public class AdminPage extends javax.swing.JFrame {
         jPanel4 = new javax.swing.JPanel();
         profile = new javax.swing.JLabel();
         l_print = new javax.swing.JLabel();
+        jLabel3 = new javax.swing.JLabel();
         jPanel3 = new javax.swing.JPanel();
         jLabel7 = new javax.swing.JLabel();
         minimize = new javax.swing.JLabel();
@@ -102,17 +103,17 @@ public class AdminPage extends javax.swing.JFrame {
         jPanel2.setBackground(new java.awt.Color(0, 0, 153));
         jPanel2.setLayout(null);
 
-        jLabel2.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        jLabel2.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel2.setText("LOGOUT");
-        jLabel2.addMouseListener(new java.awt.event.MouseAdapter() {
+        checkOut.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        checkOut.setForeground(new java.awt.Color(255, 255, 255));
+        checkOut.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        checkOut.setText("CHECK-OUT");
+        checkOut.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jLabel2MouseClicked(evt);
+                checkOutMouseClicked(evt);
             }
         });
-        jPanel2.add(jLabel2);
-        jLabel2.setBounds(0, 480, 240, 17);
+        jPanel2.add(checkOut);
+        checkOut.setBounds(0, 387, 240, 50);
 
         jLabel13.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jLabel13.setForeground(new java.awt.Color(255, 255, 255));
@@ -124,7 +125,7 @@ public class AdminPage extends javax.swing.JFrame {
             }
         });
         jPanel2.add(jLabel13);
-        jLabel13.setBounds(0, 430, 240, 17);
+        jLabel13.setBounds(0, 450, 240, 20);
 
         acc_uname.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         acc_uname.setForeground(new java.awt.Color(255, 255, 255));
@@ -149,7 +150,7 @@ public class AdminPage extends javax.swing.JFrame {
             }
         });
         jPanel2.add(l_pendings);
-        l_pendings.setBounds(0, 340, 240, 60);
+        l_pendings.setBounds(0, 330, 240, 50);
 
         l_users.setBackground(new java.awt.Color(0, 0, 153));
         l_users.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
@@ -262,7 +263,19 @@ public class AdminPage extends javax.swing.JFrame {
             }
         });
         jPanel2.add(l_print);
-        l_print.setBounds(0, 280, 240, 60);
+        l_print.setBounds(0, 280, 240, 50);
+
+        jLabel3.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        jLabel3.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel3.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel3.setText("LOGOUT");
+        jLabel3.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jLabel3MouseClicked(evt);
+            }
+        });
+        jPanel2.add(jLabel3);
+        jLabel3.setBounds(0, 490, 240, 17);
 
         jPanel1.add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 240, 520));
 
@@ -442,18 +455,11 @@ public class AdminPage extends javax.swing.JFrame {
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jLabel2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel2MouseClicked
-        
-         dbConnector dbc = new dbConnector();
-         Session sess = Session.getInstance();
-         
-    String action = "Logged Out from the System";
-    dbc.insertData("INSERT INTO tbl_logs (usr_id, l_actions, l_date) VALUES ('"+sess.getUid()+"', '"+action+"', '"+LocalDateTime.now()+"' ) ");
-        
-        LoginPage mpg = new LoginPage();
-        mpg.setVisible(true);
+    private void checkOutMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_checkOutMouseClicked
+        CheckOutPendings cop = new CheckOutPendings();
+        cop.setVisible(true);
         this.dispose();
-    }//GEN-LAST:event_jLabel2MouseClicked
+    }//GEN-LAST:event_checkOutMouseClicked
 
     private void formWindowActivated(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowActivated
         Session sess = Session.getInstance();
@@ -572,7 +578,6 @@ private void setNoProfileText() {
     }//GEN-LAST:event_jLabel13MouseClicked
 
     private void l_pendingsMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_l_pendingsMouseClicked
- 
         UserPendings usp = new UserPendings();
         usp.setVisible(true);
         this.dispose();
@@ -763,7 +768,13 @@ private void setNoProfileText() {
     }//GEN-LAST:event_l_pendingsMouseExited
 
     private void exitMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_exitMouseClicked
-        System.exit(0);
+        dbConnector dbc = new dbConnector();
+    Session sess = Session.getInstance();
+    
+    String action = "Logged Out from the System";
+    dbc.insertData("INSERT INTO tbl_logs (usr_id, l_actions, l_date) VALUES ('"+sess.getUid()+"', '"+action+"', '"+LocalDateTime.now()+"' ) ");
+        
+        System.exit(0);                                
     }//GEN-LAST:event_exitMouseClicked
 
     private void exitMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_exitMouseEntered
@@ -790,6 +801,18 @@ private void setNoProfileText() {
         minimize.setBackground(new java.awt.Color(0,0,255));
         minimize.setForeground(new java.awt.Color(255,255,255));
     }//GEN-LAST:event_minimizeMouseExited
+
+    private void jLabel3MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel3MouseClicked
+        dbConnector dbc = new dbConnector();
+         Session sess = Session.getInstance();
+         
+    String action = "Logged Out from the System";
+    dbc.insertData("INSERT INTO tbl_logs (usr_id, l_actions, l_date) VALUES ('"+sess.getUid()+"', '"+action+"', '"+LocalDateTime.now()+"' ) ");
+        
+        LoginPage mpg = new LoginPage();
+        mpg.setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_jLabel3MouseClicked
 
     /**
      * @param args the command line arguments
@@ -834,9 +857,10 @@ private void setNoProfileText() {
     private javax.swing.JLabel button_delete;
     private javax.swing.JLabel button_update;
     private javax.swing.JLabel button_view;
+    private javax.swing.JLabel checkOut;
     private javax.swing.JLabel exit;
     private javax.swing.JLabel jLabel13;
-    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;

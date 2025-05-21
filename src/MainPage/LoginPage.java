@@ -45,6 +45,19 @@ ps.setBorder(compound);
     
         Color hovercolor = new Color(204,204,204);
         Color exitcolor = new Color(255,255,255);
+        
+        private static boolean hasRecoveryQuestions(dbConnector connector, int userId) {
+    String query = "SELECT COUNT(*) AS total FROM tbl_recovery WHERE user_id = " + userId;
+    try {
+        ResultSet rs = connector.getData(query);
+        if (rs.next()) {
+            return rs.getInt("total") > 0;
+        }
+    } catch (SQLException e) {
+        e.printStackTrace();
+    }
+    return false;
+}
     
     public static boolean loginAcc(String username, String password){
     dbConnector connector = new dbConnector();
@@ -75,6 +88,10 @@ ps.setBorder(compound);
         sess.setType(resultSet.getString("u_type"));
         sess.setStatus(resultSet.getString("u_status"));
         sess.setU_image(resultSet.getString("u_image"));
+        
+                int userId = sess.getUid();
+                boolean hasRecovery = hasRecoveryQuestions(connector, userId);
+                sess.setHasRecoveryQuestions(hasRecovery);
          
         
     return true;

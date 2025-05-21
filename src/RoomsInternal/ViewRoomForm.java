@@ -11,6 +11,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import javax.swing.BorderFactory;
 import javax.swing.border.Border;
+import javax.swing.table.TableColumnModel;
 import net.proteanit.sql.DbUtils;
 
 /**
@@ -47,6 +48,16 @@ public class ViewRoomForm extends javax.swing.JInternalFrame {
                 urTableMouseClicked(evt);
             }
         });
+     
+     TableColumnModel columnModel = urTable.getColumnModel();
+       
+        columnModel.getColumn(0).setHeaderValue("ID");
+        columnModel.getColumn(1).setHeaderValue("ROOM TYPE");
+        columnModel.getColumn(2).setHeaderValue("ROOM PRICE");
+        columnModel.getColumn(3).setHeaderValue("ROOM STATUS");
+
+    urTable.getTableHeader().repaint();
+    
     }
     
     public void displayData(){

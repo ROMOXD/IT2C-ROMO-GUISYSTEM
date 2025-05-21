@@ -18,6 +18,7 @@ public class Session {
    private String type;
    private String status;
    private String u_image;
+   private boolean hasRecoveryQuestions;
    
    private Session(){
    
@@ -132,6 +133,16 @@ public class Session {
     public void setU_image(String u_image) {
         this.u_image = u_image;
     }
+
+    public boolean isHasRecoveryQuestions() {
+        return hasRecoveryQuestions;
+    }
+
+    public void setHasRecoveryQuestions(boolean hasRecoveryQuestions) {
+        this.hasRecoveryQuestions = hasRecoveryQuestions;
+    }
+    
+    
     
     
    

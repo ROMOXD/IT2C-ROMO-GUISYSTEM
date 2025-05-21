@@ -8,6 +8,7 @@ package BookingsInternal;
 import config.dbConnector;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import javax.swing.table.TableColumnModel;
 import net.proteanit.sql.DbUtils;
 
 /**
@@ -24,14 +25,29 @@ public class ManageBookings extends javax.swing.JInternalFrame {
          this.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 0, 0, 0));
     ((javax.swing.plaf.basic.BasicInternalFrameUI) this.getUI()).setNorthPane(null);
         displayData();
+        
+    TableColumnModel columnModel = bookingsTable.getColumnModel();
+       
+        columnModel.getColumn(0).setHeaderValue("ID");
+        columnModel.getColumn(1).setHeaderValue("ROOM TYPE");
+        columnModel.getColumn(2).setHeaderValue("FIRSTNAME");
+        columnModel.getColumn(3).setHeaderValue("LASTNAME");
+        columnModel.getColumn(4).setHeaderValue("EMAIL");
+        columnModel.getColumn(5).setHeaderValue("CHECK-IN");
+        columnModel.getColumn(6).setHeaderValue("CHECK-OUT");
+        columnModel.getColumn(7).setHeaderValue("TIME-IN");
+        columnModel.getColumn(8).setHeaderValue("STATUS");
+
+    bookingsTable.getTableHeader().repaint();
+    
     }
     
     public void displayData() {
     try {
         dbConnector dbc = new dbConnector();
-        String query = "SELECT b.b_id, r.r_type, r.r_price, "
+        String query = "SELECT b.b_id, r.r_type, "
                      + "b.g_fname, b.g_lname, b.g_email, "
-                     + "b.b_cin, b.b_cout, b.b_cash, b.b_change, b.b_status "
+                     + "b.b_cin, b.b_cout, b.time_in, b.b_status "
                      + "FROM tbl_bookings b "
                      + "JOIN tbl_room r ON b.rm_id = r.room_id";
 
@@ -56,7 +72,6 @@ public class ManageBookings extends javax.swing.JInternalFrame {
         jScrollPane1 = new javax.swing.JScrollPane();
         bookingsTable = new javax.swing.JTable();
 
-        bookingsTable.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         bookingsTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 

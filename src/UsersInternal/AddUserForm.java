@@ -608,19 +608,21 @@ if (duplicateCheck()) {
         }
 
         String userImagePath = "";
-     if (selectedFile != null) {
+    if (selectedFile != null) {
             userImagePath = destination;
         }
 
-        boolean inserted = dbc.insertData("INSERT INTO tbl_user (u_fname, u_lname, u_email, u_cnum, u_usern, u_pass, u_gen, u_age, u_type, u_status, u_image) "
-            + "VALUES ('" + fn.getText() + "', '" + ln.getText() + "', '" + email + "', '" + cn.getText() + "', '"
-            + un.getText() + "', '" + pass + "', '" + gd.getSelectedItem() + "', '" + ag.getText() + "', '"
-            + accountType + "', 'Inactive', '" + userImagePath + "')");
+    String insertQuery = "INSERT INTO tbl_user (u_fname, u_lname, u_email, u_cnum, u_usern, u_pass, u_gen, u_age, u_type, u_status, u_image) VALUES ('"
+        + fn.getText() + "', '" + ln.getText() + "', '" + email + "', '" + cn.getText() + "', '"
+        + un.getText() + "', '" + pass + "', '" + gd.getSelectedItem() + "', '" + ag.getText() + "', '"
+        + accountType + "', 'Inactive', '" + userImagePath + "')";
 
-        if (!inserted) {
-            JOptionPane.showMessageDialog(null, "Registration Failed. Please try again.");
-            return;
-        }
+    int newUserId = dbc.insertDataWithGeneratedKey(insertQuery);
+
+    if (newUserId == -1) {
+    JOptionPane.showMessageDialog(this, "Registration failed.");
+    return;
+}
 
         if (selectedFile != null) {
             try {
@@ -630,10 +632,14 @@ if (duplicateCheck()) {
                 return;
             }
         }
+        
+        Session sess = Session.getInstance();
+        String action = "Added User Record with ID of " + newUserId;
+        dbc.insertData("INSERT INTO tbl_logs (usr_id, l_actions, l_date) VALUES ('"
+        + sess.getUid() + "', '" + action + "', '" + java.time.LocalDateTime.now() + "')");
 
         JOptionPane.showMessageDialog(null, "Registered Successfully!");
         
-    Session sess = Session.getInstance();
     String type = sess.getType();
 
     if (type.equals("Admin")) {

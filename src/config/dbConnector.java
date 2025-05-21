@@ -61,7 +61,38 @@ public class dbConnector {
         return false;
     }
 }
-        
+      public int insertDataWithGeneratedKey(String query) {
+    Statement stmt = null;
+    ResultSet rs = null;
+
+    try {
+        if (connect == null || connect.isClosed()) {
+            connect = DriverManager.getConnection("jdbc:mysql://localhost:3306/hoteldb", "root", "");
+        }
+
+        stmt = connect.createStatement();
+        int affectedRows = stmt.executeUpdate(query, Statement.RETURN_GENERATED_KEYS);
+
+        if (affectedRows == 0) {
+            System.out.println("Insert failed, no rows affected.");
+            return -1;
+        }
+
+        rs = stmt.getGeneratedKeys();
+        if (rs.next()) {
+            return rs.getInt(1);
+        } else {
+            System.out.println("No generated key returned.");
+            return -1;
+        }
+    } catch (SQLException e) {
+        System.out.println("SQL Error: " + e.getMessage());
+        return -1;
+    } finally {
+        try { if (rs != null) rs.close(); } catch (SQLException e) {}
+        try { if (stmt != null) stmt.close(); } catch (SQLException e) {}
+    }
+} 
 
         
 }

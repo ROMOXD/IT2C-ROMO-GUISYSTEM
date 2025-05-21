@@ -8,6 +8,7 @@ package RoomsInternal;
 import config.dbConnector;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import javax.swing.table.TableColumnModel;
 import net.proteanit.sql.DbUtils;
 
 /**
@@ -24,6 +25,16 @@ public class ManageRooms extends javax.swing.JInternalFrame {
            this.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 0, 0, 0));
     ((javax.swing.plaf.basic.BasicInternalFrameUI) this.getUI()).setNorthPane(null);
      displayData();
+     
+     TableColumnModel columnModel = roomsTable.getColumnModel();
+       
+        columnModel.getColumn(0).setHeaderValue("ID");
+        columnModel.getColumn(1).setHeaderValue("ROOM TYPE");
+        columnModel.getColumn(2).setHeaderValue("ROOM PRICE");
+        columnModel.getColumn(3).setHeaderValue("ROOM STATUS");
+
+    roomsTable.getTableHeader().repaint();
+     
     }
     
     public void displayData(){
@@ -56,7 +67,6 @@ public class ManageRooms extends javax.swing.JInternalFrame {
 
         jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        roomsTable.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         roomsTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 

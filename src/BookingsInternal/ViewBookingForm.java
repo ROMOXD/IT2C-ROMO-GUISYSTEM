@@ -12,6 +12,7 @@ import java.sql.SQLException;
 import javax.swing.BorderFactory;
 import javax.swing.JOptionPane;
 import javax.swing.border.Border;
+import javax.swing.table.TableColumnModel;
 import net.proteanit.sql.DbUtils;
 
 /**
@@ -40,6 +41,14 @@ public class ViewBookingForm extends javax.swing.JInternalFrame {
     g_cs.setBorder(compound);
     g_cng.setBorder(compound);
     roomComboBox.setBorder(compound);
+    
+    TableColumnModel columnModel = bkTable.getColumnModel();
+       
+        columnModel.getColumn(0).setHeaderValue("ID");
+        columnModel.getColumn(1).setHeaderValue("FIRSTNAME");
+        columnModel.getColumn(2).setHeaderValue("ROOM TYPE");
+
+    bkTable.getTableHeader().repaint();
         
         bkTable.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -229,7 +238,7 @@ public class ViewBookingForm extends javax.swing.JInternalFrame {
         jPanel2.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
         jPanel2.setLayout(null);
 
-        c_cin.setDate(new java.util.Date(1744981158000L));
+        c_cin.setDate(new java.util.Date(1747793653000L));
         c_cin.setEnabled(false);
         jPanel2.add(c_cin);
         c_cin.setBounds(20, 30, 200, 130);

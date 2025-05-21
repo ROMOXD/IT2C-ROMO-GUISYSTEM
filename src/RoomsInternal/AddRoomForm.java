@@ -17,6 +17,7 @@ import javax.swing.BorderFactory;
 import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 import javax.swing.border.Border;
+import javax.swing.table.TableColumnModel;
 import net.proteanit.sql.DbUtils;
 
 /**
@@ -47,6 +48,15 @@ public class AddRoomForm extends javax.swing.JInternalFrame {
                 updateRoomPrice();
             }
         });
+        
+        TableColumnModel columnModel = arTable.getColumnModel();
+       
+        columnModel.getColumn(0).setHeaderValue("ID");
+        columnModel.getColumn(1).setHeaderValue("ROOM TYPE");
+        columnModel.getColumn(2).setHeaderValue("ROOM PRICE");
+        columnModel.getColumn(3).setHeaderValue("ROOM STATUS");
+
+    arTable.getTableHeader().repaint();
     
     }
     
@@ -206,7 +216,7 @@ public class AddRoomForm extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_r_priceActionPerformed
 
     private void add_buttonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_add_buttonMouseClicked
-          dbConnector dbc = new dbConnector();
+      dbConnector dbc = new dbConnector();
 
     String selectedRoomType = (String) r_type.getSelectedItem();
     String price = "";
@@ -226,12 +236,23 @@ public class AddRoomForm extends javax.swing.JInternalFrame {
             return;
     }
     
-    if (dbc.insertData("INSERT INTO tbl_room (r_type, r_price, r_status) "
-            + "VALUES ('" + selectedRoomType + "', '" + price + "', 'Vacant')")) {
+    String insertQuery = "INSERT INTO tbl_room (r_type, r_price, r_status) "
+            + "VALUES ('" + selectedRoomType + "', '" + price + "', 'Vacant')";
+    
+    int newRoomId = dbc.insertDataWithGeneratedKey(insertQuery);
 
-        JOptionPane.showMessageDialog(null, "Room added successfully!");
-        
+    if (newRoomId == -1) {
+        JOptionPane.showMessageDialog(null, "Failed to add room. Please try again.");
+        return;
+    }
+    
+    JOptionPane.showMessageDialog(null, "Room added successfully!");
+    
     Session sess = Session.getInstance();
+    String action = "Added Room Record with ID of " + newRoomId;
+    dbc.insertData("INSERT INTO tbl_logs (usr_id, l_actions, l_date) VALUES ('"
+        + sess.getUid() + "', '" + action + "', '" + java.time.LocalDateTime.now() + "')");
+
     String type = sess.getType();
 
     if (type.equals("Admin")) {
@@ -248,10 +269,6 @@ public class AddRoomForm extends javax.swing.JInternalFrame {
     Window window = SwingUtilities.getWindowAncestor(this);
     if (window != null) {
         window.dispose();
-    }        
-    
-    } else {
-        JOptionPane.showMessageDialog(null, "Failed to add room. Please try again.");
     }
     }//GEN-LAST:event_add_buttonMouseClicked
 

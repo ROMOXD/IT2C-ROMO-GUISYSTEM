@@ -275,16 +275,7 @@ public class NewPassword extends javax.swing.JFrame {
     }//GEN-LAST:event_b_buttonMouseExited
 
     private void formWindowActivated(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowActivated
-        Session sess = Session.getInstance();
-      
-      if(sess.getUid() == 0){
-      JOptionPane.showMessageDialog(null, "No Shortcut Allowed!, Login First!");
-        LoginPage mpg = new LoginPage();
-        mpg.setVisible(true);
-        this.dispose();
-      }else{
-       
-      }
+        
     }//GEN-LAST:event_formWindowActivated
 
     private void s_passActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_s_passActionPerformed

@@ -7,12 +7,18 @@ package Admin;
 
 import Account.AccDetails;
 import Account.ChangePass;
+import Account.ManageLogs;
 import Account.RecoverAcc;
 import MainPage.LoginPage;
 import User.UserPage;
 import config.Session;
 import config.dbConnector;
 import java.awt.Color;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.Statement;
 import java.time.LocalDateTime;
 import javax.swing.JOptionPane;
 
@@ -26,6 +32,8 @@ public class AccountDetails extends javax.swing.JFrame {
      * Creates new form AccountDetails
      */
     
+    private boolean canClickRecovery = true;
+    
     public AccountDetails() {
         initComponents();
         addWindowListener(new java.awt.event.WindowAdapter() {
@@ -34,6 +42,7 @@ public class AccountDetails extends javax.swing.JFrame {
         l_accdMouseClicked(null);
     }
 });
+        
     }
     
         Color hovercolor = new Color(255,255,255);
@@ -41,6 +50,7 @@ public class AccountDetails extends javax.swing.JFrame {
         Color exitcolor = new Color(0,0,153);
         Color foregroundcolor = new Color(0,0,0);
         Color exitforegroundcolor = new Color(255,255,255);
+        
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -60,6 +70,7 @@ public class AccountDetails extends javax.swing.JFrame {
         l_accd = new javax.swing.JLabel();
         l_changep = new javax.swing.JLabel();
         l_recover = new javax.swing.JLabel();
+        l_logs = new javax.swing.JLabel();
         jPanel4 = new javax.swing.JPanel();
         jLabel7 = new javax.swing.JLabel();
         minimize = new javax.swing.JLabel();
@@ -99,7 +110,7 @@ public class AccountDetails extends javax.swing.JFrame {
             }
         });
         jPanel3.add(jLabel13);
-        jLabel13.setBounds(0, 450, 240, 60);
+        jLabel13.setBounds(0, 430, 240, 60);
 
         acc_uname.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         acc_uname.setForeground(new java.awt.Color(255, 255, 255));
@@ -123,7 +134,7 @@ public class AccountDetails extends javax.swing.JFrame {
             }
         });
         jPanel3.add(l_accd);
-        l_accd.setBounds(0, 140, 240, 60);
+        l_accd.setBounds(0, 100, 240, 60);
 
         l_changep.setBackground(new java.awt.Color(0, 0, 153));
         l_changep.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
@@ -137,7 +148,7 @@ public class AccountDetails extends javax.swing.JFrame {
             }
         });
         jPanel3.add(l_changep);
-        l_changep.setBounds(0, 230, 240, 60);
+        l_changep.setBounds(0, 180, 240, 60);
 
         l_recover.setBackground(new java.awt.Color(0, 0, 153));
         l_recover.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
@@ -151,7 +162,21 @@ public class AccountDetails extends javax.swing.JFrame {
             }
         });
         jPanel3.add(l_recover);
-        l_recover.setBounds(0, 320, 240, 60);
+        l_recover.setBounds(0, 260, 240, 60);
+
+        l_logs.setBackground(new java.awt.Color(0, 0, 153));
+        l_logs.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        l_logs.setForeground(new java.awt.Color(255, 255, 255));
+        l_logs.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        l_logs.setText("LOGS");
+        l_logs.setOpaque(true);
+        l_logs.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                l_logsMouseClicked(evt);
+            }
+        });
+        jPanel3.add(l_logs);
+        l_logs.setBounds(0, 340, 240, 60);
 
         jPanel2.add(jPanel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 240, 510));
 
@@ -280,16 +305,18 @@ public class AccountDetails extends javax.swing.JFrame {
     }//GEN-LAST:event_jLabel13MouseClicked
 
     private void formWindowActivated(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowActivated
-        Session sess = Session.getInstance();
-      
-      if(sess.getUid() == 0){
-      JOptionPane.showMessageDialog(null, "No Shortcut Allowed!, Login First!");
-        LoginPage mpg = new LoginPage();
-        mpg.setVisible(true);
-        this.dispose();
-      }else{
-       acc_uname.setText(sess.getUsername());
-      }
+       
+         Session sess = Session.getInstance();
+
+   if (sess.isHasRecoveryQuestions()) {
+    l_recover.setEnabled(false);       
+    l_recover.setForeground(Color.GRAY);  
+    canClickRecovery = false;            
+    } else {
+    l_recover.setEnabled(true);
+    l_recover.setForeground(Color.BLUE);
+    canClickRecovery = true;
+}
     }//GEN-LAST:event_formWindowActivated
 
     private void l_changepMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_l_changepMouseClicked
@@ -300,6 +327,8 @@ public class AccountDetails extends javax.swing.JFrame {
         l_changep.setForeground(foregroundcolor);
         l_recover.setBackground(exitcolor);
         l_recover.setForeground(exitforegroundcolor);
+        l_logs.setBackground(exitcolor);
+        l_logs.setForeground(exitforegroundcolor);
         
         DesktopPane.removeAll();
         ChangePass cp = new ChangePass();
@@ -314,6 +343,8 @@ public class AccountDetails extends javax.swing.JFrame {
         l_changep.setForeground(exitforegroundcolor);
         l_recover.setBackground(exitcolor);
         l_recover.setForeground(exitforegroundcolor);
+        l_logs.setBackground(exitcolor);
+        l_logs.setForeground(exitforegroundcolor);
         
         DesktopPane.removeAll();
         AccDetails acd = new AccDetails();
@@ -321,6 +352,8 @@ public class AccountDetails extends javax.swing.JFrame {
     }//GEN-LAST:event_l_accdMouseClicked
 
     private void l_recoverMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_l_recoverMouseClicked
+    
+        if (!canClickRecovery) return;
         
         l_accd.setBackground(exitcolor);
         l_accd.setForeground(exitforegroundcolor);
@@ -328,8 +361,9 @@ public class AccountDetails extends javax.swing.JFrame {
         l_changep.setForeground(exitforegroundcolor);
         l_recover.setBackground(hovercolor);
         l_recover.setForeground(foregroundcolor);
-
-        
+        l_logs.setBackground(exitcolor);
+        l_logs.setForeground(exitforegroundcolor);
+          
         DesktopPane.removeAll();
         RecoverAcc ra = new RecoverAcc();
         DesktopPane.add(ra).setVisible(true);
@@ -373,6 +407,21 @@ public class AccountDetails extends javax.swing.JFrame {
         exit.setBackground(new java.awt.Color(0,0,255));
         exit.setForeground(new java.awt.Color(255,255,255));
     }//GEN-LAST:event_exitMouseExited
+
+    private void l_logsMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_l_logsMouseClicked
+        l_accd.setBackground(exitcolor);
+        l_accd.setForeground(exitforegroundcolor);
+        l_changep.setBackground(exitcolor);
+        l_changep.setForeground(exitforegroundcolor);
+        l_recover.setBackground(exitcolor);
+        l_recover.setForeground(exitforegroundcolor);
+        l_logs.setBackground(hovercolor);
+        l_logs.setForeground(foregroundcolor);
+        
+        DesktopPane.removeAll();
+        ManageLogs mnl = new ManageLogs();
+        DesktopPane.add(mnl).setVisible(true);  
+    }//GEN-LAST:event_l_logsMouseClicked
 
     /**
      * @param args the command line arguments
@@ -423,6 +472,7 @@ public class AccountDetails extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel5;
     private javax.swing.JLabel l_accd;
     private javax.swing.JLabel l_changep;
+    private javax.swing.JLabel l_logs;
     private javax.swing.JLabel l_recover;
     private javax.swing.JLabel minimize;
     // End of variables declaration//GEN-END:variables

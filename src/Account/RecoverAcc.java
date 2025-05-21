@@ -7,9 +7,11 @@ package Account;
 
 import Admin.AdminPage;
 import User.UserPage;
+import config.HashPass;
 import config.Session;
 import config.dbConnector;
 import java.awt.Color;
+import java.security.NoSuchAlgorithmException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import javax.swing.BorderFactory;
@@ -205,12 +207,8 @@ public class RecoverAcc extends javax.swing.JInternalFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void f_quesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_f_quesActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_f_quesActionPerformed
-
     private void r_saveMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_r_saveMouseClicked
-        if (!r_save.isEnabled()) {
+     if (!r_save.isEnabled()) {
         return;
     }
 
@@ -218,7 +216,6 @@ public class RecoverAcc extends javax.swing.JInternalFrame {
     Session sess = Session.getInstance();
 
     if (duplicatecheck()) {
-
         f_ques.setText("");
         s_ques.setText("");
         t_ques.setText("");
@@ -232,44 +229,48 @@ public class RecoverAcc extends javax.swing.JInternalFrame {
             JOptionPane.showMessageDialog(null, "All questions should be answered!");
         } else {
             int uid = sess.getUid();
-            String ans1 = f_ques.getText();
-            String ans2 = s_ques.getText();
-            String ans3 = t_ques.getText();
-
-            String query = "INSERT INTO tbl_recovery (user_id, f_ans, s_ans, t_ans) " +
-                           "VALUES ('" + uid + "', '" + ans1 + "', '" + ans2 + "', '" + ans3 + "')";
-
-            boolean success = dbc.insertData(query);
-
-            if (success) {
-                caution.setText("Recovery questions saved successfully!");
+            try {
                 
-                checkRecoveryAnswers();
-                r_save.setEnabled(false);
-                f_ques.setEditable(false);
-                s_ques.setEditable(false);
-                t_ques.setEditable(false);
-                f_ques.setEnabled(false);
-                s_ques.setEnabled(false);
-                t_ques.setEnabled(false);
-                
-    
-    String type = sess.getType();
-    if (type.equals("Admin")) {
-        AdminPage hmp = new AdminPage();
-        hmp.setVisible(true);
-    } else if (type.equals("User")) {
-        UserPage usp = new UserPage();
-        usp.setVisible(true);
-    } else {
-        JOptionPane.showMessageDialog(this, "Unknown account type: " + type);
-        return;
-    }
+                String ans1 = HashPass.hashPassword(f_ques.getText());
+                String ans2 = HashPass.hashPassword(s_ques.getText());
+                String ans3 = HashPass.hashPassword(t_ques.getText());
 
-    this.dispose();
- 
-            } else {
-                JOptionPane.showMessageDialog(null, "Database error: Failed to save recovery answers.");
+                String query = "INSERT INTO tbl_recovery (user_id, f_ans, s_ans, t_ans) " +
+                               "VALUES ('" + uid + "', '" + ans1 + "', '" + ans2 + "', '" + ans3 + "')";
+
+                boolean success = dbc.insertData(query);
+
+                if (success) {
+                    caution.setText("Recovery questions saved successfully!");
+
+                    checkRecoveryAnswers();
+                    r_save.setEnabled(false);
+                    f_ques.setEditable(false);
+                    s_ques.setEditable(false);
+                    t_ques.setEditable(false);
+                    f_ques.setEnabled(false);
+                    s_ques.setEnabled(false);
+                    t_ques.setEnabled(false);
+
+                    String type = sess.getType();
+                    if (type.equals("Admin")) {
+                        AdminPage hmp = new AdminPage();
+                        hmp.setVisible(true);
+                    } else if (type.equals("User")) {
+                        UserPage usp = new UserPage();
+                        usp.setVisible(true);
+                    } else {
+                        JOptionPane.showMessageDialog(this, "Unknown account type: " + type);
+                        return;
+                    }
+
+                    this.dispose();
+                } else {
+                    JOptionPane.showMessageDialog(null, "Database error: Failed to save recovery answers.");
+                }
+            } catch (NoSuchAlgorithmException ex) {
+                System.out.println("Error hashing answers: " + ex.getMessage());
+                JOptionPane.showMessageDialog(null, "Error while hashing recovery answers.");
             }
         }
     }
@@ -284,6 +285,10 @@ public class RecoverAcc extends javax.swing.JInternalFrame {
         r_save.setBackground(exitcolor);
         r_save.setForeground(exitforegroundcolor);
     }//GEN-LAST:event_r_saveMouseExited
+
+    private void f_quesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_f_quesActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_f_quesActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

@@ -7,7 +7,6 @@ package BookingsInternal;
 
 import Admin.AdminPage;
 import static MainPage.RegistrationForm.email;
-import static MainPage.RegistrationForm.username;
 import User.UserPage;
 import config.Session;
 import config.dbConnector;
@@ -190,7 +189,7 @@ while (rs.next()) {
     dbConnector dbc = new dbConnector();
     
     try{
-    String query = "SELECT * FROM tbl_bookings WHERE u_email = '" +g_em.getText()+"'";
+    String query = "SELECT * FROM tbl_bookings WHERE g_email = '" +g_em.getText()+"'";
     ResultSet resultSet = dbc.getData(query);
     
     
@@ -472,10 +471,12 @@ while (rs.next()) {
         jPanel2.setBackground(new java.awt.Color(255, 255, 255));
         jPanel2.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
         jPanel2.setLayout(null);
+
+        c_cout.setDate(new java.util.Date(1747793653000L));
         jPanel2.add(c_cout);
         c_cout.setBounds(270, 30, 200, 130);
 
-        c_cin.setDate(new java.util.Date(1744981158000L));
+        c_cin.setDate(new java.util.Date(1747793653000L));
         jPanel2.add(c_cin);
         c_cin.setBounds(30, 30, 200, 130);
 
@@ -558,15 +559,6 @@ while (rs.next()) {
         // TODO add your handling code here:
     }//GEN-LAST:event_g_lnActionPerformed
 
-    private void c_allMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_c_allMouseClicked
-        g_fn.setText("");
-        g_ln.setText("");
-        g_ag.setText("");
-        g_em.setText("");
-        g_cs.setText("");
-        g_cng.setText("");
-    }//GEN-LAST:event_c_allMouseClicked
-
     private void add_buttonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_add_buttonMouseClicked
      if (!validateInputs()) {
     return;
@@ -599,25 +591,30 @@ try {
     SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
     String checkInStr = sdf.format(c_cin.getDate());
     String checkOutStr = sdf.format(c_cout.getDate());
-
-    boolean inserted = dbc.insertData(
-        "INSERT INTO tbl_bookings (g_fname, g_lname, g_age, g_email, rm_id, rm_type, rm_status, b_cin, b_cout, b_cash, b_change, b_status, g_image) VALUES ('"
+    
+    String insertQuery = "INSERT INTO tbl_bookings (g_fname, g_lname, g_age, g_email, rm_id, rm_type, rm_status, b_cin, b_cout, time_in, b_cash, b_change, b_status, g_image) VALUES ('"
         + g_fn.getText() + "', '" + g_ln.getText() + "', '" + g_ag.getText() + "', '" + g_em.getText() + "', '"
         + selectedRoomId + "', '" + roomType + "', 'Booked', '" + checkInStr + "', '"
-        + checkOutStr + "', '" + cash + "', '" + change + "', 'Pending', '" + destination + "')"
-    );
+        + checkOutStr + "', 'Guest Not Yet Timed In', '" + cash + "', '" + change + "', 'Pending', '" + destination + "')";
 
-    if (!inserted) {
-        JOptionPane.showMessageDialog(this, "Booking failed.");
-        return;
-    }
+    int newBookingId = dbc.insertDataWithGeneratedKey(insertQuery);
+    
+
+   if (newBookingId == -1) {
+    JOptionPane.showMessageDialog(this, "Booking failed.");
+    return;
+}
 
     dbc.updateData("UPDATE tbl_room SET r_status = 'Booked' WHERE room_id = '" + selectedRoomId + "'");
+    
+    Session sess = Session.getInstance();
+        String action = "Added Booking Record with ID of " + newBookingId;
+        dbc.insertData("INSERT INTO tbl_logs (usr_id, l_actions, l_date) VALUES ('"
+    + sess.getUid() + "', '" + action + "', '" + java.time.LocalDateTime.now() + "')");
 
     JOptionPane.showMessageDialog(this, "Booking added successfully!");
     loadVacantRooms();
     
-    Session sess = Session.getInstance();
     String type = sess.getType();
 
     if (type.equals("Admin")) {
@@ -677,16 +674,6 @@ try {
         path = "";
     }//GEN-LAST:event_i_removeMouseClicked
 
-    private void c_allMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_c_allMouseEntered
-        c_all.setBackground(hovercolor);
-        c_all.setForeground(foregroundcolor);
-    }//GEN-LAST:event_c_allMouseEntered
-
-    private void c_allMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_c_allMouseExited
-        c_all.setBackground(exitcolor);
-        c_all.setForeground(exitforegroundcolor);
-    }//GEN-LAST:event_c_allMouseExited
-
     private void add_buttonMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_add_buttonMouseEntered
         add_button.setBackground(hovercolor);
         add_button.setForeground(foregroundcolor);
@@ -744,6 +731,25 @@ try {
             evt.consume();
         }
     }//GEN-LAST:event_g_csKeyTyped
+
+    private void c_allMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_c_allMouseExited
+        c_all.setBackground(exitcolor);
+        c_all.setForeground(exitforegroundcolor);
+    }//GEN-LAST:event_c_allMouseExited
+
+    private void c_allMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_c_allMouseEntered
+        c_all.setBackground(hovercolor);
+        c_all.setForeground(foregroundcolor);
+    }//GEN-LAST:event_c_allMouseEntered
+
+    private void c_allMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_c_allMouseClicked
+        g_fn.setText("");
+        g_ln.setText("");
+        g_ag.setText("");
+        g_em.setText("");
+        g_cs.setText("");
+        g_cng.setText("");
+    }//GEN-LAST:event_c_allMouseClicked
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

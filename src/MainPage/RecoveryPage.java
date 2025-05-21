@@ -5,10 +5,12 @@
  */
 package MainPage;
 
+import config.HashPass;
 import config.Session;
 import config.dbConnector;
 import java.awt.Color;
 import java.awt.Font;
+import java.security.NoSuchAlgorithmException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import javax.swing.BorderFactory;
@@ -258,26 +260,58 @@ t_ques.setBorder(compound);
     }//GEN-LAST:event_formWindowActivated
 
     private void e_buttonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_e_buttonMouseClicked
-
-        String user = username.getText();
+    
+        dbConnector dbc = new dbConnector();
+    
+    try {
+        String usernameInput = username.getText();
         String ans1 = f_ques.getText();
         String ans2 = s_ques.getText();
         String ans3 = t_ques.getText();
 
-        if (ans1.isEmpty() || ans2.isEmpty() || ans3.isEmpty()) {
-            JOptionPane.showMessageDialog(null, "Please answer all the recovery questions!");
+        if (usernameInput.isEmpty() || ans1.isEmpty() || ans2.isEmpty() || ans3.isEmpty()) {
+            JOptionPane.showMessageDialog(null, "Please fill in all fields!");
             return;
         }
 
-        boolean isRecovered = recoverAccount(user, ans1, ans2, ans3);
+        ResultSet userRs = dbc.getData("SELECT u_id FROM tbl_user WHERE u_usern = '" + usernameInput + "'");
+        
+        if (userRs.next()) {
+            String userId = userRs.getString("u_id");
 
-        if (isRecovered) {
-            this.dispose();
-            NewPassword np = new NewPassword();
-            np.setVisible(true);
+            ResultSet recRs = dbc.getData("SELECT f_ans, s_ans, t_ans FROM tbl_recovery WHERE user_id = '" + userId + "'");
+
+            if (recRs.next()) {
+                String dbAns1 = recRs.getString("f_ans");
+                String dbAns2 = recRs.getString("s_ans");
+                String dbAns3 = recRs.getString("t_ans");
+
+                String hashedAns1 = HashPass.hashPassword(ans1);
+                String hashedAns2 = HashPass.hashPassword(ans2);
+                String hashedAns3 = HashPass.hashPassword(ans3);
+
+                if (dbAns1.equals(hashedAns1) && dbAns2.equals(hashedAns2) && dbAns3.equals(hashedAns3)) {
+                    JOptionPane.showMessageDialog(null, "Recovery successful. Please reset your password.");
+                    this.dispose();
+                    NewPassword np = new NewPassword();
+                    np.setVisible(true);
+                } else {
+                    JOptionPane.showMessageDialog(null, "Incorrect answers. Please try again.");
+                }
+
+            } else {
+                JOptionPane.showMessageDialog(null, "Recovery data not found for this user.");
+            }
+
         } else {
-            JOptionPane.showMessageDialog(null, "Incorrect answers. Please try again.");
+            JOptionPane.showMessageDialog(null, "Username not found.");
         }
+
+    } catch (SQLException | NoSuchAlgorithmException ex) {
+        System.out.println("Error: " + ex);
+        JOptionPane.showMessageDialog(null, "An error occurred while processing your request.");
+    }
+    
     }//GEN-LAST:event_e_buttonMouseClicked
 
     private void b_buttonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_b_buttonMouseClicked

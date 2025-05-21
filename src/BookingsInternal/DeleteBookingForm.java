@@ -17,6 +17,7 @@ import javax.swing.BorderFactory;
 import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 import javax.swing.border.Border;
+import javax.swing.table.TableColumnModel;
 import net.proteanit.sql.DbUtils;
 
 /**
@@ -45,6 +46,15 @@ public class DeleteBookingForm extends javax.swing.JInternalFrame {
     g_cs.setBorder(compound);
     g_cng.setBorder(compound);
     roomComboBox.setBorder(compound);
+    
+    TableColumnModel columnModel = bkTable.getColumnModel();
+       
+        columnModel.getColumn(0).setHeaderValue("ID");
+        columnModel.getColumn(1).setHeaderValue("FIRSTNAME");
+        columnModel.getColumn(2).setHeaderValue("ROOM TYPE");
+        columnModel.getColumn(3).setHeaderValue("STATUS");
+
+    bkTable.getTableHeader().repaint();
         
         bkTable.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -88,7 +98,7 @@ public class DeleteBookingForm extends javax.swing.JInternalFrame {
     public void displayData(){
         try{
             dbConnector dbc = new dbConnector();
-            ResultSet rs = dbc.getData("SELECT b_id, g_fname, rm_type FROM tbl_bookings");
+            ResultSet rs = dbc.getData("SELECT b_id, g_fname, rm_type, b_status FROM tbl_bookings WHERE b_status = 'Pending'");
             bkTable.setModel(DbUtils.resultSetToTableModel(rs));
              rs.close();
         }catch(SQLException ex){
@@ -261,7 +271,7 @@ public class DeleteBookingForm extends javax.swing.JInternalFrame {
         jPanel2.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
         jPanel2.setLayout(null);
 
-        c_cin.setDate(new java.util.Date(1744981158000L));
+        c_cin.setDate(new java.util.Date(1747793653000L));
         c_cin.setEnabled(false);
         jPanel2.add(c_cin);
         c_cin.setBounds(20, 30, 200, 130);
@@ -334,11 +344,16 @@ public class DeleteBookingForm extends javax.swing.JInternalFrame {
 
             dbc.updateData("DELETE FROM tbl_bookings WHERE b_id = " + bookingId);
             dbc.updateData("UPDATE tbl_room SET r_status = 'Vacant' WHERE room_id = " + roomId);
+            
+            Session sess = Session.getInstance();
+            String action = "Deleted Booking Record with ID of " + bookingId;
+            dbc.insertData("INSERT INTO tbl_logs (usr_id, l_actions, l_date) VALUES ('"
+            + sess.getUid() + "', '" + action + "', '" + java.time.LocalDateTime.now() + "')");
+
 
             JOptionPane.showMessageDialog(this, "Booking deleted successfully and room status set to Vacant.");
             displayData();
           
-    Session sess = Session.getInstance();
     String type = sess.getType();
 
     if (type.equals("Admin")) {

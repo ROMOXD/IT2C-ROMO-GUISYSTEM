@@ -12,6 +12,7 @@ import java.sql.SQLException;
 import javax.swing.BorderFactory;
 import javax.swing.JOptionPane;
 import javax.swing.border.Border;
+import javax.swing.table.TableColumnModel;
 import net.proteanit.sql.DbUtils;
 
 /**
@@ -42,6 +43,15 @@ public class ViewUserForm extends javax.swing.JInternalFrame {
     un.setBorder(compound);
     ag.setBorder(compound);
     at.setBorder(compound);
+    
+    TableColumnModel columnModel = usersTable.getColumnModel();
+       
+        columnModel.getColumn(0).setHeaderValue("ID");
+        columnModel.getColumn(1).setHeaderValue("FIRSTNAME");
+        columnModel.getColumn(2).setHeaderValue("USERNAME");
+
+
+    usersTable.getTableHeader().repaint();
     
     usersTable.addMouseListener(new java.awt.event.MouseAdapter() {
     public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -240,7 +250,6 @@ public class ViewUserForm extends javax.swing.JInternalFrame {
         jLabel5.setText("C Number:");
         jPanel3.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(310, 50, -1, 30));
 
-        usersTable.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         usersTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 

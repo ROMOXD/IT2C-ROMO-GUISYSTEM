@@ -31,6 +31,7 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 import javax.swing.border.Border;
+import javax.swing.table.TableColumnModel;
 import net.proteanit.sql.DbUtils;
 
 /**
@@ -80,6 +81,14 @@ public class UpdateUserForm extends javax.swing.JInternalFrame {
     i_select.setEnabled(false);
     i_remove.setEnabled(false);
     setCanSelectImage(false);
+    
+    TableColumnModel columnModel = usersTable.getColumnModel();
+       
+        columnModel.getColumn(0).setHeaderValue("ID");
+        columnModel.getColumn(1).setHeaderValue("FIRSTNAME");
+        columnModel.getColumn(2).setHeaderValue("USERNAME");
+
+    usersTable.getTableHeader().repaint();
     
         usersTable.addMouseListener(new java.awt.event.MouseAdapter() {
     public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -450,7 +459,6 @@ public class UpdateUserForm extends javax.swing.JInternalFrame {
         jLabel10.setText("User ID:");
         jPanel3.add(jLabel10, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 60, -1, -1));
 
-        usersTable.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         usersTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
@@ -738,11 +746,15 @@ public class UpdateUserForm extends javax.swing.JInternalFrame {
     
     }
     
+    Session sess = Session.getInstance();
+        String action = "Updated User Record with ID of " + user_id.getText();
+        dbc.insertData("INSERT INTO tbl_logs (usr_id, l_actions, l_date) VALUES ('"
+    + sess.getUid() + "', '" + action + "', '" + java.time.LocalDateTime.now() + "')");
+
 
     if (dbc.updateData(query)) {
         JOptionPane.showMessageDialog(null, "Updated Successfully!");
         
-    Session sess = Session.getInstance();
     String type = sess.getType();
 
     if (type.equals("Admin")) {

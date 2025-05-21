@@ -14,8 +14,10 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDateTime;
 import javax.swing.JOptionPane;
+import javax.swing.table.TableColumnModel;
 import net.proteanit.sql.DbUtils;
-
+import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
 /**
  *
  * @author Mark Kevin Romo
@@ -29,6 +31,27 @@ public class UserPendings extends javax.swing.JFrame {
     public UserPendings() {
         initComponents();
         displayData();
+        
+    TableColumnModel UserColumnModel = a_table.getColumnModel();
+       
+        UserColumnModel.getColumn(0).setHeaderValue("ID");
+        UserColumnModel.getColumn(1).setHeaderValue("LASTNAME");
+        UserColumnModel.getColumn(2).setHeaderValue("USERNAME");
+        UserColumnModel.getColumn(3).setHeaderValue("USER TYPE");
+        UserColumnModel.getColumn(4).setHeaderValue("STATUS");
+
+    a_table.getTableHeader().repaint();
+    
+    TableColumnModel BookingColumnModel = p_table.getColumnModel();
+        
+        BookingColumnModel.getColumn(0).setHeaderValue("ID");
+        BookingColumnModel.getColumn(1).setHeaderValue("ROOM ID");
+        BookingColumnModel.getColumn(2).setHeaderValue("LASTNAME");
+        BookingColumnModel.getColumn(3).setHeaderValue("CHECK-OUT");
+        BookingColumnModel.getColumn(4).setHeaderValue("STATUS");
+
+    p_table.getTableHeader().repaint();
+    
     }
     
      Color hovercolor = new Color(255,255,255);
@@ -39,11 +62,11 @@ public class UserPendings extends javax.swing.JFrame {
     public void displayData(){
         try{
             dbConnector dbc = new dbConnector();
-            ResultSet rsInactive = dbc.getData("SELECT b_id, rm_id, g_fname, g_lname, b_cin, b_cout, b_status FROM tbl_bookings WHERE b_status = 'Pending'");
+            ResultSet rsInactive = dbc.getData("SELECT b_id, rm_id, g_lname, b_cout, b_status FROM tbl_bookings WHERE b_status = 'Pending'");
         p_table.setModel(DbUtils.resultSetToTableModel(rsInactive));
         rsInactive.close();
 
-        ResultSet rsActive = dbc.getData("SELECT u_id, u_fname, u_lname, u_type, u_status FROM tbl_user WHERE u_status = 'Inactive'");
+        ResultSet rsActive = dbc.getData("SELECT u_id, u_lname, u_usern, u_type, u_status FROM tbl_user WHERE u_status = 'Inactive'");
         a_table.setModel(DbUtils.resultSetToTableModel(rsActive));
         rsActive.close();
         }catch(SQLException ex){
@@ -52,6 +75,7 @@ public class UserPendings extends javax.swing.JFrame {
         }
 
     }
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -67,7 +91,6 @@ public class UserPendings extends javax.swing.JFrame {
         jScrollPane2 = new javax.swing.JScrollPane();
         a_table = new javax.swing.JTable();
         jLabel2 = new javax.swing.JLabel();
-        jLabel3 = new javax.swing.JLabel();
         filler1 = new javax.swing.Box.Filler(new java.awt.Dimension(0, 0), new java.awt.Dimension(0, 0), new java.awt.Dimension(32767, 32767));
         jPanel3 = new javax.swing.JPanel();
         jLabel6 = new javax.swing.JLabel();
@@ -75,6 +98,7 @@ public class UserPendings extends javax.swing.JFrame {
         exit1 = new javax.swing.JLabel();
         b_button = new javax.swing.JLabel();
         s_update = new javax.swing.JLabel();
+        jLabel4 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setUndecorated(true);
@@ -96,6 +120,11 @@ public class UserPendings extends javax.swing.JFrame {
 
             }
         ));
+        p_table.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                p_tableMouseClicked(evt);
+            }
+        });
         jScrollPane1.setViewportView(p_table);
 
         jPanel1.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(470, 130, 390, 280));
@@ -116,11 +145,6 @@ public class UserPendings extends javax.swing.JFrame {
         jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel2.setText("USER");
         jPanel1.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 90, 390, 30));
-
-        jLabel3.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        jLabel3.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel3.setText("BOOKINGS");
-        jPanel1.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(470, 90, 390, 30));
         jPanel1.add(filler1, new org.netbeans.lib.awtextra.AbsoluteConstraints(630, 470, -1, -1));
 
         jPanel3.setBackground(new java.awt.Color(0, 0, 153));
@@ -214,11 +238,16 @@ public class UserPendings extends javax.swing.JFrame {
         });
         jPanel1.add(s_update, new org.netbeans.lib.awtextra.AbsoluteConstraints(710, 420, 150, 40));
 
+        jLabel4.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        jLabel4.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel4.setText("BOOKINGS");
+        jPanel1.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(470, 90, 390, 30));
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 900, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -307,51 +336,65 @@ public class UserPendings extends javax.swing.JFrame {
 
     private void s_updateMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_s_updateMouseClicked
         try {
-            dbConnector dbc = new dbConnector();
-            int selectedInactive = p_table.getSelectedRow();
-            int selectedActive = a_table.getSelectedRow();
+        dbConnector dbc = new dbConnector();
+        int selectedInactive = p_table.getSelectedRow();
+        int selectedActive = a_table.getSelectedRow();
 
-            if (selectedInactive != -1) {
-                String id = p_table.getValueAt(selectedInactive, 0).toString();
-                String sql = "UPDATE tbl_bookings SET b_status = 'Approved' WHERE b_id = '" + id + "'";
-                dbc.updateData(sql);
-                javax.swing.JOptionPane.showMessageDialog(this, "Bookings Approved successfully!");
-                
+        if (selectedInactive != -1) {
+            String id = p_table.getValueAt(selectedInactive, 0).toString();
+
+            String fetchDatesSql = "SELECT b_cin, b_cout FROM tbl_bookings WHERE b_id = '" + id + "'";
+            ResultSet rs = dbc.getData(fetchDatesSql);
+
+            if (rs.next()) {
+                LocalDate b_cin = rs.getDate("b_cin").toLocalDate();
+                LocalDate b_cout = rs.getDate("b_cout").toLocalDate();
+
+                long daysBetween = ChronoUnit.DAYS.between(b_cin, b_cout);
+                String timeInValue = daysBetween + " Day";
+
+                String updateSql = "UPDATE tbl_bookings SET b_status = 'Approved', time_in = '" + timeInValue + "' WHERE b_id = '" + id + "'";
+                dbc.updateData(updateSql);
+
+                JOptionPane.showMessageDialog(this, "Booking Approved successfully!");
+
                 AdminPage adp = new AdminPage();
                 adp.setVisible(true);
                 this.dispose();
-
-            } else if (selectedActive != -1) {
-                String id = a_table.getValueAt(selectedActive, 0).toString();
-                String sql = "UPDATE tbl_user SET u_status = 'Active' WHERE u_id = '" + id + "'";
-                dbc.updateData(sql);
-                javax.swing.JOptionPane.showMessageDialog(this, "User Activated successfully!");
-
-    Session sess = Session.getInstance();
-    String type = sess.getType();
-
-    if (type.equals("Admin")) {
-        AdminPage hmp = new AdminPage();
-        hmp.setVisible(true);
-    } else if (type.equals("User")) {
-        UserPage usp = new UserPage();
-        usp.setVisible(true);
-    } else {
-        JOptionPane.showMessageDialog(this, "Unknown account type: " + type);
-        return;
-    }
-
-    this.dispose();
-                
             } else {
-                javax.swing.JOptionPane.showMessageDialog(this, "Please select a user or bookings to update.");
+                JOptionPane.showMessageDialog(this, "Booking not found.");
             }
-            displayData();
-            
 
-        } catch (Exception ex) {
-            System.out.println("Error: " + ex.getMessage());
+        } else if (selectedActive != -1) {
+            String id = a_table.getValueAt(selectedActive, 0).toString();
+            String sql = "UPDATE tbl_user SET u_status = 'Active' WHERE u_id = '" + id + "'";
+            dbc.updateData(sql);
+            JOptionPane.showMessageDialog(this, "User Activated successfully!");
+
+            Session sess = Session.getInstance();
+            String type = sess.getType();
+
+            if (type.equals("Admin")) {
+                AdminPage hmp = new AdminPage();
+                hmp.setVisible(true);
+            } else if (type.equals("User")) {
+                UserPage usp = new UserPage();
+                usp.setVisible(true);
+            } else {
+                JOptionPane.showMessageDialog(this, "Unknown account type: " + type);
+                return;
+            }
+
+            this.dispose();
+        } else {
+            JOptionPane.showMessageDialog(this, "Please select a user or booking to update.");
         }
+
+        displayData();
+
+    } catch (Exception ex) {
+        System.out.println("Error: " + ex.getMessage());
+    }
     }//GEN-LAST:event_s_updateMouseClicked
 
     private void s_updateMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_s_updateMouseEntered
@@ -363,6 +406,10 @@ public class UserPendings extends javax.swing.JFrame {
         s_update.setBackground(exitcolor);
         s_update.setForeground(exitforegroundcolor);
     }//GEN-LAST:event_s_updateMouseExited
+
+    private void p_tableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_p_tableMouseClicked
+        // TODO add your handling code here:
+    }//GEN-LAST:event_p_tableMouseClicked
 
     /**
      * @param args the command line arguments
@@ -405,7 +452,7 @@ public class UserPendings extends javax.swing.JFrame {
     private javax.swing.JLabel exit1;
     private javax.swing.Box.Filler filler1;
     private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel3;

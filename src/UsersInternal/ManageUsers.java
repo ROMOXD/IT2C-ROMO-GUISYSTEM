@@ -8,6 +8,7 @@ package UsersInternal;
 import config.dbConnector;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import javax.swing.table.TableColumnModel;
 import net.proteanit.sql.DbUtils;
 
 /**
@@ -24,6 +25,18 @@ public class ManageUsers extends javax.swing.JInternalFrame {
          this.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 0, 0, 0));
     ((javax.swing.plaf.basic.BasicInternalFrameUI) this.getUI()).setNorthPane(null);
         displayData();
+        
+        TableColumnModel columnModel = usersTable.getColumnModel();
+       
+        columnModel.getColumn(0).setHeaderValue("ID");
+        columnModel.getColumn(1).setHeaderValue("FIRSTNAME");
+        columnModel.getColumn(2).setHeaderValue("LASTNAME");
+        columnModel.getColumn(3).setHeaderValue("EMAIL");
+        columnModel.getColumn(4).setHeaderValue("USERNAME");
+        columnModel.getColumn(5).setHeaderValue("USER TYPE");
+
+    usersTable.getTableHeader().repaint();
+    
     }
 
     public void displayData(){
@@ -57,7 +70,6 @@ public class ManageUsers extends javax.swing.JInternalFrame {
         jPanel2.setBackground(new java.awt.Color(255, 255, 255));
         jPanel2.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        usersTable.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         usersTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 

@@ -17,6 +17,7 @@ import javax.swing.BorderFactory;
 import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 import javax.swing.border.Border;
+import javax.swing.table.TableColumnModel;
 import net.proteanit.sql.DbUtils;
 
 /**
@@ -52,6 +53,16 @@ public class DeleteRoomForm extends javax.swing.JInternalFrame {
                 urTableMouseClicked(evt);
             }
         });
+     
+     TableColumnModel columnModel = urTable.getColumnModel();
+       
+        columnModel.getColumn(0).setHeaderValue("ID");
+        columnModel.getColumn(1).setHeaderValue("ROOM TYPE");
+        columnModel.getColumn(2).setHeaderValue("ROOM PRICE");
+        columnModel.getColumn(3).setHeaderValue("ROOM STATUS");
+
+    urTable.getTableHeader().repaint();
+    
     }
     
      Color hovercolor = new Color(255,255,255);
@@ -244,8 +255,12 @@ public class DeleteRoomForm extends javax.swing.JInternalFrame {
     if (dbc.insertData(deleteQuery)) {
         JOptionPane.showMessageDialog(null, "Room deleted successfully!");
         displayData();
-
+        
     Session sess = Session.getInstance();
+        String action = "Deleted Room Record with ID of " + roomId;
+        dbc.insertData("INSERT INTO tbl_logs (usr_id, l_actions, l_date) VALUES ('"
+    + sess.getUid() + "', '" + action + "', '" + java.time.LocalDateTime.now() + "')");
+
     String type = sess.getType();
 
     if (type.equals("Admin")) {
