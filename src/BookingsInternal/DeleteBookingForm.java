@@ -7,10 +7,12 @@ package BookingsInternal;
 
 import Admin.AdminPage;
 import User.UserPage;
+import UsersInternal.AddUserForm;
 import config.Session;
 import config.dbConnector;
 import java.awt.Color;
 import java.awt.Window;
+import java.io.File;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import javax.swing.BorderFactory;
@@ -29,6 +31,13 @@ public class DeleteBookingForm extends javax.swing.JInternalFrame {
     /**
      * Creates new form DeleteBookingForm
      */
+    
+    String destination = "";
+    File selectedFile;
+    String path = "";
+    String oldpath = "";
+    
+    
     public DeleteBookingForm() {
         initComponents();
         this.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 0, 0, 0));
@@ -64,7 +73,8 @@ public class DeleteBookingForm extends javax.swing.JInternalFrame {
                         String selectedID = bkTable.getValueAt(row, 0).toString();
                         dbConnector dbc = new dbConnector();
                         ResultSet rs = dbc.getData("SELECT * FROM tbl_bookings WHERE b_id = " + selectedID);
-
+                        
+                        AddUserForm auf = new AddUserForm();
                         if (rs.next()) {
                             g_fn.setText(rs.getString("g_fname"));
                             g_ln.setText(rs.getString("g_lname"));
@@ -72,6 +82,10 @@ public class DeleteBookingForm extends javax.swing.JInternalFrame {
                             g_ag.setText(rs.getString("g_age"));
                             g_cs.setText(rs.getString("b_cash"));
                             g_cng.setText(rs.getString("b_change"));
+                            image.setIcon(auf.ResizeImage(rs.getString("g_image"),null, image));
+                            oldpath = rs.getString("g_image");
+                            path = rs.getString("g_image");
+                            destination = rs.getString("g_image");
 
                         String currentRoomId = rs.getString("rm_id");
                         loadRoomOptions(currentRoomId);
@@ -174,6 +188,8 @@ public class DeleteBookingForm extends javax.swing.JInternalFrame {
         jLabel5 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         bkTable = new javax.swing.JTable();
+        jPanel3 = new javax.swing.JPanel();
+        image = new javax.swing.JLabel();
 
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
@@ -302,7 +318,17 @@ public class DeleteBookingForm extends javax.swing.JInternalFrame {
         ));
         jScrollPane1.setViewportView(bkTable);
 
-        jPanel1.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(560, 21, 300, 360));
+        jPanel1.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(560, 21, 300, 130));
+
+        jPanel3.setBackground(new java.awt.Color(255, 255, 255));
+        jPanel3.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        jPanel3.setLayout(null);
+
+        image.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        jPanel3.add(image);
+        image.setBounds(10, 10, 280, 150);
+
+        jPanel1.add(jPanel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(560, 160, 300, 170));
 
         getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(-1, 0, 1000, 440));
 
@@ -403,6 +429,7 @@ public class DeleteBookingForm extends javax.swing.JInternalFrame {
     private javax.swing.JTextField g_em;
     private javax.swing.JTextField g_fn;
     private javax.swing.JTextField g_ln;
+    private javax.swing.JLabel image;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -413,6 +440,7 @@ public class DeleteBookingForm extends javax.swing.JInternalFrame {
     private javax.swing.JLabel jLabel8;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
+    private javax.swing.JPanel jPanel3;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JComboBox<String> roomComboBox;
     // End of variables declaration//GEN-END:variables
