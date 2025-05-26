@@ -1,6 +1,6 @@
 # HOTEL BOOKING SYSTEM
 
-## CURRENT TASK (1-13) FEATURES - (WORKING)
+## CURRENT WORKING TASK (1-13) FEATURES
 
 TASK 1:<br>
       Validation requirements upon registration:<br>
