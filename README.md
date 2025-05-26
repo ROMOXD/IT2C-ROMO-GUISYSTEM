@@ -2,17 +2,17 @@
 
 ## CURRENT TASK (1-13) FEATURES
 
-TASK 1:  ✔
-      Validation requirements upon registration:
-      > No field should be empty unless it's optional.
-      > Password should have at least 8 characters.
-      > Email and Username must not be duplicates.
-      > Contact number should only accept numbers.     
-TASK 2:  ✔
-      > Insert data to database table for  users after registration validation.
-TASK 3:  ✔
-      > Only active users can log in.
-TASK 4:  ✔
+TASK 1:  ✔<br>
+      Validation requirements upon registration:<br>
+      > No field should be empty unless it's optional.<br>
+      > Password should have at least 8 characters.<br>
+      > Email and Username must not be duplicates.<br>
+      > Contact number should only accept numbers.<br>  
+TASK 2:  ✔<br>
+      > Insert data to database table for  users after registration validation.<br>
+TASK 3:  ✔<br>
+      > Only active users can log in.<br>
+TASK 4:  ✔<br>
       > After logging in, the user should be redirected to the appropriate dashboard.
         Users with the user type "User" should be redirected to the user dashboard, 
         and users with the user type "Admin" should be redirected to the admin dashboard.
