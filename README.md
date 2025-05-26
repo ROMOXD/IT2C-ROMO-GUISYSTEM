@@ -13,30 +13,30 @@ TASK 2:  ✔<br>
 TASK 3:  ✔<br>
       > Only active users can log in.<br>
 TASK 4:  ✔<br>
-      > After logging in, the user should be redirected to the appropriate dashboard.
-        Users with the user type "User" should be redirected to the user dashboard, 
-        and users with the user type "Admin" should be redirected to the admin dashboard.
-TASK 5:  ✔
-      > After logging in, user details should be retrieved and displayed as the logged-in account in the dashboard.
-        It should redirect to the user's name being displayed.
-TASK 6:  ✔
-      > Prepare the second form for user registration in the admin (account creation made by an admin).
-TASK 7:  ✔
-      > The admin should be able to update the user status for logging in 
-        (Pending status should be updated to Active users).
-TASK 8:  ✔
-      > Update several important data such as email and contact information in the admin.
-TASK 9:  ✔
-      > Users can view their own details and change their password.
-TASK 10:  ✔
-      > Password hashing should be implemented together with the password field.
-TASK 11:  ✔
-      > Forgot Password functionality should be implemented.
-TASK 12:  ✔
-      Image Manipulation:
-      > Users/Admin should be able to set profiles and modify it.
-TASK 13:  ✔
-      > Logs table containing all activies. 
+      > After logging in, the user should be redirected to the appropriate dashboard.<br>
+        Users with the user type "User" should be redirected to the user dashboard,<br>
+        and users with the user type "Admin" should be redirected to the admin dashboard.<br>
+TASK 5:  ✔<br>
+      > After logging in, user details should be retrieved and displayed as the logged-in account in the dashboard.<br>
+        It should redirect to the user's name being displayed.<br>
+TASK 6:  ✔<br>
+      > Prepare the second form for user registration in the admin (account creation made by an admin).<br>
+TASK 7:  ✔<br>
+      > The admin should be able to update the user status for logging in<br>
+        (Pending status should be updated to Active users).<br>
+TASK 8:  ✔<br>
+      > Update several important data such as email and contact information in the admin.<br>
+TASK 9:  ✔<br>
+      > Users can view their own details and change their password.<br>
+TASK 10:  ✔<br>
+      > Password hashing should be implemented together with the password field.<br>
+TASK 11:  ✔<br>
+      > Forgot Password functionality should be implemented.<br>
+TASK 12:  ✔<br>
+      Image Manipulation:<br>
+      > Users/Admin should be able to set profiles and modify it.<br>
+TASK 13:  ✔<br>
+      > Logs table containing all activies.<br>
 
 ## INSTALLATION
 
