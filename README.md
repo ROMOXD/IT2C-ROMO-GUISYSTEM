@@ -4,39 +4,39 @@
 
 TASK 1:<br>
       Validation requirements upon registration:<br>
-      > No field should be empty unless it's optional.<br>
-      > Password should have at least 8 characters.<br>
-      > Email and Username must not be duplicates.<br>
-      > Contact number should only accept numbers.<br>  
+      - No field should be empty unless it's optional.<br>
+      - Password should have at least 8 characters.<br>
+      - Email and Username must not be duplicates.<br>
+      - Contact number should only accept numbers.<br>  
 TASK 2:<br>
-      > Insert data to database table for  users after registration validation.<br><br>
+      - Insert data to database table for  users after registration validation.<br><br>
 TASK 3:<br>
-      > Only active users can log in.<br><br>
+      - Only active users can log in.<br><br>
 TASK 4:<br>
-      > After logging in, the user should be redirected to the appropriate dashboard.<br>
+      - After logging in, the user should be redirected to the appropriate dashboard.<br>
         Users with the user type "User" should be redirected to the user dashboard,<br>
         and users with the user type "Admin" should be redirected to the admin dashboard.<br><br>
 TASK 5:<br>
-      > After logging in, user details should be retrieved and displayed as the logged-in account in the dashboard.<br>
+      - After logging in, user details should be retrieved and displayed as the logged-in account in the dashboard.<br>
         It should redirect to the user's name being displayed.<br><br>
 TASK 6:<br>
-      > Prepare the second form for user registration in the admin (account creation made by an admin).<br><br>
+      - Prepare the second form for user registration in the admin (account creation made by an admin).<br><br>
 TASK 7:<br>
-      > The admin should be able to update the user status for logging in<br>
+      - The admin should be able to update the user status for logging in<br>
         (Pending status should be updated to Active users).<br><br>
 TASK 8:<br>
-      > Update several important data such as email and contact information in the admin.<br><br>
+      - Update several important data such as email and contact information in the admin.<br><br>
 TASK 9:<br>
-      > Users can view their own details and change their password.<br><br>
+      - Users can view their own details and change their password.<br><br>
 TASK 10:<br>
-      > Password hashing should be implemented together with the password field.<br><br>
+      - Password hashing should be implemented together with the password field.<br><br>
 TASK 11:<br>
-      > Forgot Password functionality should be implemented.<br><br>
+      - Forgot Password functionality should be implemented.<br><br>
 TASK 12:<br>
       Image Manipulation:<br>
-      > Users/Admin should be able to set profiles and modify it.<br><br>
+      - Users/Admin should be able to set profiles and modify it.<br><br>
 TASK 13:<br>
-      > Logs table containing all activies.<br><br>
+      - Logs table containing all activies.<br><br>
 
 ## INSTALLATION
 
