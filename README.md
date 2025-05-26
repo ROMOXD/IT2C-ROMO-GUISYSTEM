@@ -35,7 +35,7 @@ TASK 11:<br>
 TASK 12:<br>
       Image Manipulation:<br>
       > Users/Admin should be able to set profiles and modify it.<br><br>
-TASK 13:  ✔<br>
+TASK 13:<br>
       > Logs table containing all activies.<br><br>
 
 ## INSTALLATION
